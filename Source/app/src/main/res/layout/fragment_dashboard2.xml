@@ -11,7 +11,7 @@
         android:id="@+id/ic_dashboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Main Window"
+        android:text="Main Window14"
         android:textSize="36sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

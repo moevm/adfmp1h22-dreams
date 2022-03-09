@@ -32,10 +32,14 @@ class MainActivity : AppCompatActivity() {
 
         replaceFragment(dashboardFragment )
 
+//        val actionBar = supportActionBar
+//        actionBar!!.title = "Settings Activity"
+
         val bottom_navigation : BottomNavigationView = findViewById (R.id.bottom_navigation)
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.ic_dashboard -> replaceFragment(dashboardFragment)
+                R.id.ic_dashboard -> replaceFragment(dashboardFragment);
+
                 R.id.ic_settings -> replaceFragment(settingsFragment)
                 R.id.ic_statistics -> replaceFragment(statisticsFragment)
             }
