@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ic_dashboard"
+        android:icon="@drawable/ic_notes"
+        android:title="Dreams" />
+
+    <item
+        android:id="@+id/ic_statistics"
+        android:icon="@drawable/ic_graph"
+        android:title="Statistics" />
+
+    <item
+        android:id="@+id/ic_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
+</menu>
