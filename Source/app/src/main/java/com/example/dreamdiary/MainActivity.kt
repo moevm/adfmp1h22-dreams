@@ -6,17 +6,21 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.widget.ButtonBarLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.example.dreamdiary.fragments.DashboardFragment
 import com.example.dreamdiary.fragments.SettingsFragment
 import com.example.dreamdiary.fragments.StatisticsFragment
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
     private val dashboardFragment = DashboardFragment()
     private val settingsFragment = SettingsFragment()
     private val statisticsFragment = StatisticsFragment()
+    lateinit var notesRV: RecyclerView //
+    lateinit var addFAB: FloatingActionButton //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +32,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SettingsActivty::class.java)
             startActivity(intent)
         }
-
-
         replaceFragment(dashboardFragment )
-
 //        val actionBar = supportActionBar
 //        actionBar!!.title = "Settings Activity"
 
@@ -45,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+
+        //notesRV = findViewById(R.id.idRVNotes)
+
     }
 
 
