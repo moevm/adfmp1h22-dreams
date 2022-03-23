@@ -50,9 +50,9 @@ class DashboardFragment : Fragment(), View.OnClickListener {
         notesRV = v.findViewById<RecyclerView>(R.id.idRVNotes)
         addFAB = v.findViewById<FloatingActionButton>(R.id.idFABAddNote)
 
-        notesRV.layoutManager = LinearLayoutManager(this)
+        //notesRV.layoutManager = LinearLayoutManager(this)
 
-        val noteRVApapter = NoteRVApapter(this, this, this)
+        //val noteRVApapter = NoteRVApapter(this, this, this)
 
 
         return inflater.inflate(R.layout.fragment_dashboard2, container, false)

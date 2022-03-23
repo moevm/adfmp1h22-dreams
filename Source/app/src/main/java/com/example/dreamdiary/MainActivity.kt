@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 //        val actionBar = supportActionBar
 //        actionBar!!.title = "Settings Activity"
 
-        notesRV.layoutManager = LinearLayoutManager(this)
+        //notesRV.layoutManager = LinearLayoutManager(this)
 
 
 
