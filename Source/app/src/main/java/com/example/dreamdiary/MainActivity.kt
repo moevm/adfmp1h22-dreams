@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.widget.ButtonBarLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dreamdiary.fragments.DashboardFragment
 import com.example.dreamdiary.fragments.SettingsFragment
@@ -35,6 +36,10 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(dashboardFragment )
 //        val actionBar = supportActionBar
 //        actionBar!!.title = "Settings Activity"
+
+        notesRV.layoutManager = LinearLayoutManager(this)
+
+
 
         val bottom_navigation : BottomNavigationView = findViewById (R.id.bottom_navigation)
         bottom_navigation.setOnNavigationItemSelectedListener {

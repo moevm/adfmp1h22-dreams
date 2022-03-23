@@ -1,14 +1,15 @@
 package com.example.dreamdiary.fragments
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dreamdiary.NoteRVApapter
+import com.example.dreamdiary.NoteViewModel
 import com.example.dreamdiary.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -29,7 +30,7 @@ class DashboardFragment : Fragment(), View.OnClickListener {
 
     lateinit var notesRV: RecyclerView // ----------------------------
     lateinit var addFAB: FloatingActionButton // --------------------------
-
+    lateinit var viewModal: NoteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +50,9 @@ class DashboardFragment : Fragment(), View.OnClickListener {
         notesRV = v.findViewById<RecyclerView>(R.id.idRVNotes)
         addFAB = v.findViewById<FloatingActionButton>(R.id.idFABAddNote)
 
+        notesRV.layoutManager = LinearLayoutManager(this)
+
+        val noteRVApapter = NoteRVApapter(this, this, this)
 
 
         return inflater.inflate(R.layout.fragment_dashboard2, container, false)
