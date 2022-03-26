@@ -1,4 +1,4 @@
-package com.example.dreamdiary
+package com.example.dreamsx
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -15,7 +15,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     init {
         val dao = NoteDatabase.getDatbase(application).getNotesDao()
         repository = NoteRepository(dao)
-        allNotes = repository.AllNotes
+        allNotes = repository.allNotes
     }
 
     fun deleteNote(note: Note) = viewModelScope.launch(Dispatchers.IO){

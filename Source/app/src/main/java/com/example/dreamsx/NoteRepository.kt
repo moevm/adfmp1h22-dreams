@@ -1,9 +1,9 @@
-package com.example.dreamdiary
+package com.example.dreamsx
 
 import androidx.lifecycle.LiveData
 
 class NoteRepository(private val notesDao: NotesDao) {
-    val AllNotes: LiveData<List<Note>> = notesDao.getAllNotes()
+    val allNotes: LiveData<List<Note>> = notesDao.getAllNotes()
 
     suspend fun insert(note: Note){
         notesDao.insert(note)
