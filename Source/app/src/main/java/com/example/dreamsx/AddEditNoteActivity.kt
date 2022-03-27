@@ -13,6 +13,9 @@ import java.util.*
 class AddEditNoteActivity : AppCompatActivity() {
     lateinit var noteTitleEdit : EditText
     lateinit var noteDescriptionEdit : EditText
+    lateinit var noteTag : EditText
+    lateinit var noteMood : DreamMood
+
     lateinit var addUpdateButton : Button
     lateinit var viewModel: NoteViewModel
     var noteID = -1;
@@ -22,8 +25,13 @@ class AddEditNoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_note)
 
+        //---*******************************************************************************
         noteTitleEdit = findViewById(R.id.idEditNoteTitle)
         noteDescriptionEdit = findViewById(R.id.idEditNoteDescription)
+        noteTag = findViewById(R.id.idEditNoteTag)
+        //noteMood = findViewById(R.id.idEditNoteDescription)
+
+
         addUpdateButton = findViewById(R.id.idBtnAddUpdate)
 
         viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModel::class.java)
@@ -34,6 +42,8 @@ class AddEditNoteActivity : AppCompatActivity() {
             val noteDesc = intent.getStringExtra("noteDescription")
             noteID = intent.getIntExtra("noteID", -1)
             addUpdateButton.setText("Обновить сон")
+
+            //---*******************************************************************************
             noteTitleEdit.setText(noteTitle)
             noteDescriptionEdit.setText(noteDesc)
 
@@ -41,9 +51,12 @@ class AddEditNoteActivity : AppCompatActivity() {
             addUpdateButton.setText("Сохранить сон")
         }
 
+
         addUpdateButton.setOnClickListener {
+            //---*******************************************************************************
             val noteTitle = noteTitleEdit.text.toString()
-            val noteDescription = noteTitleEdit.text.toString()
+            val noteDescription = noteDescriptionEdit.text.toString()
+
 
             if (noteType.equals("Edit")){
                 if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty()){
