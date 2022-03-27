@@ -26,16 +26,18 @@
             />
 
         <TextView
+            android:id="@+id/idTVTimeStamp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/idTVTimeStamp"
-            android:text="TimeStamp"
-            android:textColor="@color/white"
             android:layout_below="@id/idTVNoteTitle"
-            android:layout_margin="4dp"
-            android:padding="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_toLeftOf="@id/IVDelete"
-          />
+            android:padding="4dp"
+            android:text="TimeStamp"
+            android:textColor="@color/white" />
 
         <ImageView
             android:layout_width="wrap_content"

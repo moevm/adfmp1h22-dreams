@@ -8,47 +8,177 @@
     tools:context=".AddEditNoteActivity">
 
     <EditText
+        android:id="@+id/idEditNoteTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/idEditNoteTitle"
+
+        android:maxLines="1"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_edittext"
         android:hint="Введите заголовок сна"
         android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:layout_margin="10dp"
-        />
+        android:textColorHint="@color/white" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/idEditNoteDescription"
-        android:hint="Введите опписание сна"
-
-        android:layout_above="@id/idBtnAddUpdate"
-
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:layout_margin="10dp"
-
-        android:layout_below="@id/idEditNoteTitle"
-        android:gravity="start|top"
-
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        />
-
-    <Button
+        android:id="@+id/idEditNoteTag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/idBtnAddUpdate"
-        android:layout_margin="20dp"
-        android:layout_alignParentBottom="true"
-        android:text="Button"
-        android:textAllCaps="false"
 
+        android:layout_below="@+id/idEditNoteTitle"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+
+        android:maxLines="1"
+        android:background="@drawable/rounded_edittext"
+        android:hint="Введите теги"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
+
+    <TextView
+        android:id="@+id/idQuestionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/idEditNoteTag"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="8dp"
+        android:text="Видели знакомых?"
+        android:textColor="@color/white" />
+
+    <RadioButton
+        android:id="@+id/radioBtnYes"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_below="@id/idQuestionLabel"
+        android:layout_alignLeft="@id/idQuestionLabel"
+        android:textSize="11dp"
+        android:text="Да"
+        android:textColor="@color/white">
+
+    </RadioButton>
+
+    <RadioButton
+        android:id="@+id/idRadioBtnNo"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_below="@id/radioBtnYes"
+        android:layout_alignLeft="@id/idQuestionLabel"
+        android:text="Нет"
+        android:textSize="11dp"
+        android:textColor="@color/white">
+
+    </RadioButton>
+
+    <EditText
+        android:id="@+id/idEditNotePrecisionComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idRadioBtnNo"
+        android:layout_alignLeft="@id/idQuestionLabel"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        android:hint="Введите имя знакомого"
+
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="11dp" />
+
+    <Button
+        android:id="@+id/idBtnNextPrecision"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_below="@id/idEditNotePrecisionComments"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/custom_button_back"
-        />
+        android:text="Далее"
+        android:textSize="11dp" />
+
+    <TextView
+
+        android:id="@+id/moodLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/idBtnNextPrecision"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="3dp"
+
+        android:text="Настроение во время сна:"
+        android:textColor="@color/white" />
+
+    <ImageButton
+        android:id="@+id/idBtnMoodGood"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/idBtnNextPrecision"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/moodLabel"
+        android:src="@drawable/smilegood" />
+
+    <ImageButton
+        android:id="@+id/idBtnMoodMiddle"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/idBtnNextPrecision"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/idBtnMoodGood"
+        android:src="@drawable/smileneutral" />
+
+    <ImageButton
+        android:id="@+id/idBtnMoodBad"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/idBtnNextPrecision"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/idBtnMoodMiddle"
+        android:src="@drawable/smileangry" />
+
+    <EditText
+        android:id="@+id/idEditNoteDescription"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_above="@+id/idBtnAddUpdate"
+        android:layout_below="@id/idBtnMoodBad"
+        android:layout_marginStart="10dp"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+
+        android:layout_marginBottom="10dp"
+
+        android:background="@drawable/rounded_edittext"
+        android:gravity="start|top"
+        android:hint="Введите опписание сна"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
 
+    <Button
+        android:id="@+id/idBtnAddUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_button_back"
+        android:text="Сохранить сон"
+        android:textAllCaps="false" />
 
 
 
