@@ -43,7 +43,7 @@ class AddEditNoteActivity : AppCompatActivity() {
 
         addUpdateButton.setOnClickListener {
             val noteTitle = noteTitleEdit.text.toString()
-            val noteDescription = noteTitleEdit.text.toString()
+            val noteDescription = noteDescriptionEdit.text.toString()
 
             if (noteType.equals("Edit")){
                 if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty()){
