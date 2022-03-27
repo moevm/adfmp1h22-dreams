@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
         notesRV.layoutManager = LinearLayoutManager(this)
 
         val noteRVApapter = NoteRVApapter(this,this, this)
+        notesRV.adapter = noteRVApapter
 
         viewModal = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModel::class.java)
         viewModal.allNotes.observe(this, Observer{ list ->
@@ -58,11 +59,6 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
     }
 
     override fun onNoteClick(note: Note) {
-        viewModal.deleteNote(note)
-        Toast.makeText(this, "${note.notesTitle}", Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDeleteClick(note: Note) {
         val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
         intent.putExtra("noteType", "Edit")
         intent.putExtra("noteTitle", note.notesTitle)
@@ -71,6 +67,11 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
         startActivity(intent)
         this.finish()
 
+    }
+
+    override fun onDeleteClick(note: Note) {
+        viewModal.deleteNote(note)
+        Toast.makeText(this, "${note.notesTitle}", Toast.LENGTH_LONG).show()
     }
 
 
