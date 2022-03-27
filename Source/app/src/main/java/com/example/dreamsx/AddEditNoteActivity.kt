@@ -33,12 +33,12 @@ class AddEditNoteActivity : AppCompatActivity() {
             val noteTitle = intent.getStringExtra("noteTitle")
             val noteDesc = intent.getStringExtra("noteDescription")
             noteID = intent.getIntExtra("noteID", -1)
-            addUpdateButton.setText("Update Note")
+            addUpdateButton.setText("Обновить сон")
             noteTitleEdit.setText(noteTitle)
             noteDescriptionEdit.setText(noteDesc)
 
         } else  {
-            addUpdateButton.setText("Save Note")
+            addUpdateButton.setText("Сохранить сон")
         }
 
         addUpdateButton.setOnClickListener {
@@ -53,14 +53,14 @@ class AddEditNoteActivity : AppCompatActivity() {
                     val updateNote = Note(noteTitle, noteDescription, currentDate)
                     updateNote.id = noteID
                     viewModel.updateNote(updateNote)
-                    Toast.makeText(this, "Note Updated...", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Сон обновлен...", Toast.LENGTH_LONG).show()
                 }
             } else {
                 if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty()){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
                     viewModel.addNote(Note(noteTitle, noteDescription, currentDate))
-                    Toast.makeText(this, "Note Added..", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Сон добавлен...", Toast.LENGTH_LONG).show()
                 }
             }
             startActivity(Intent(applicationContext, MainActivity::class.java))

@@ -14,22 +14,38 @@
         >
 
         <TextView
+            android:id="@+id/idTVNoteTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toLeftOf="@id/IVDelete"
+            android:padding="4dp"
             android:text="Dream title"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:padding="4dp"
-            android:layout_margin="4dp"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/idTVTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/idTVNoteTitle"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_toLeftOf="@id/IVDelete"
-            android:id="@+id/idTVNoteTitle"
-            />
+            android:padding="4dp"
+            android:text="#Самолет, #Отпуск"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/idTVTimeStamp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/idTVNoteTitle"
+            android:layout_below="@id/idTVTag"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
