@@ -13,8 +13,8 @@ import java.util.*
 class AddEditNoteActivity : AppCompatActivity() {
     lateinit var noteTitleEdit : EditText
     lateinit var noteDescriptionEdit : EditText
-    lateinit var noteTag : EditText
-    lateinit var noteMood : DreamMood
+    lateinit var noteTagEdit : EditText
+    lateinit var noteMoodEdit : DreamMood
 
     lateinit var addUpdateButton : Button
     lateinit var viewModel: NoteViewModel
@@ -28,8 +28,8 @@ class AddEditNoteActivity : AppCompatActivity() {
         //---*******************************************************************************
         noteTitleEdit = findViewById(R.id.idEditNoteTitle)
         noteDescriptionEdit = findViewById(R.id.idEditNoteDescription)
-        noteTag = findViewById(R.id.idEditNoteTag)
-        //noteMood = findViewById(R.id.idEditNoteDescription)
+        noteTagEdit = findViewById(R.id.idEditNoteTag)
+        //noteMoodEdit = findViewById(R.id.idEditNoteDescription)
 
 
         addUpdateButton = findViewById(R.id.idBtnAddUpdate)
@@ -40,12 +40,16 @@ class AddEditNoteActivity : AppCompatActivity() {
         if (noteType.equals("Edit")){
             val noteTitle = intent.getStringExtra("noteTitle")
             val noteDesc = intent.getStringExtra("noteDescription")
+            val noteTags = intent.getStringExtra("noteTag")
+
             noteID = intent.getIntExtra("noteID", -1)
             addUpdateButton.setText("Обновить сон")
 
             //---*******************************************************************************
             noteTitleEdit.setText(noteTitle)
             noteDescriptionEdit.setText(noteDesc)
+            //noteTagEdit.setText(noteTags)
+
 
         } else  {
             addUpdateButton.setText("Сохранить сон")
@@ -56,23 +60,25 @@ class AddEditNoteActivity : AppCompatActivity() {
             //---*******************************************************************************
             val noteTitle = noteTitleEdit.text.toString()
             val noteDescription = noteDescriptionEdit.text.toString()
+            //val noteTag = noteTagEdit.text.toString()
 
+            val noteTag = "valera"
 
             if (noteType.equals("Edit")){
-                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty()){
+                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() && noteTag.isNotEmpty()){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
 
-                    val updateNote = Note(noteTitle, noteDescription, currentDate)
+                    val updateNote = Note(noteTitle, noteDescription, currentDate, noteTag, DreamMood.COOL)  ///////
                     updateNote.id = noteID
                     viewModel.updateNote(updateNote)
                     Toast.makeText(this, "Сон обновлен...", Toast.LENGTH_LONG).show()
                 }
             } else {
-                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty()){
+                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() && noteTag.isNotEmpty()){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
-                    viewModel.addNote(Note(noteTitle, noteDescription, currentDate))
+                    viewModel.addNote(Note(noteTitle, noteDescription, currentDate, noteTag, DreamMood.COOL))   ///////////////////
                     Toast.makeText(this, "Сон добавлен...", Toast.LENGTH_LONG).show()
                 }
             }

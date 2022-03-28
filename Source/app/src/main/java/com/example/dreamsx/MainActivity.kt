@@ -63,10 +63,10 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
         intent.putExtra("noteType", "Edit")
         intent.putExtra("noteTitle", note.notesTitle)
         intent.putExtra("noteDescription", note.noteDescription)
+        intent.putExtra("noteTag", note.noteTags)
         intent.putExtra("nodeID", note.id)
         startActivity(intent)
         this.finish()
-
     }
 
     override fun onDeleteClick(note: Note) {
