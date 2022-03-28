@@ -48,7 +48,7 @@ class AddEditNoteActivity : AppCompatActivity() {
             //---*******************************************************************************
             noteTitleEdit.setText(noteTitle)
             noteDescriptionEdit.setText(noteDesc)
-            //noteTagEdit.setText(noteTags)
+            noteTagEdit.setText(noteTags)
 
 
         } else  {
@@ -60,14 +60,14 @@ class AddEditNoteActivity : AppCompatActivity() {
             //---*******************************************************************************
             val noteTitle = noteTitleEdit.text.toString()
             val noteDescription = noteDescriptionEdit.text.toString()
-            //val noteTag = noteTagEdit.text.toString()
-
-            val noteTag = "valera"
+            val noteTag = noteTagEdit.text.toString()
 
             if (noteType.equals("Edit")){
-                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() && noteTag.isNotEmpty()){
+                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() ){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
+
+                    print("** * Updating noteTag: $noteTag")
 
                     val updateNote = Note(noteTitle, noteDescription, currentDate, noteTag, DreamMood.COOL)  ///////
                     updateNote.id = noteID
@@ -75,9 +75,11 @@ class AddEditNoteActivity : AppCompatActivity() {
                     Toast.makeText(this, "Сон обновлен...", Toast.LENGTH_LONG).show()
                 }
             } else {
-                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() && noteTag.isNotEmpty()){
+                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() ){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
+
+                    print("** * Creating new noteTag: $noteTag")
                     viewModel.addNote(Note(noteTitle, noteDescription, currentDate, noteTag, DreamMood.COOL))   ///////////////////
                     Toast.makeText(this, "Сон добавлен...", Toast.LENGTH_LONG).show()
                 }
