@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="Год"
             app:layout_constraintStart_toEndOf="@+id/buttonMonth"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+
             android:text="Месяц"
             app:layout_constraintStart_toEndOf="@+id/buttonWeek"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="Неделя"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Количество снов: 2"
+            android:layout_marginLeft="8dp"
             android:textColor="#000000"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/buttonWeek"
@@ -65,6 +67,7 @@
             android:layout_marginTop="12dp"
             android:background="#DDD8D8"
             android:ems="10"
+
             android:inputType="textPersonName"
             android:text="#Отпуск"
             android:textColor="#939191"
