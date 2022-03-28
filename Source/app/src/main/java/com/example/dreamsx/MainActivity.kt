@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.title = "Дневник снов"
 
         val bottom_navigation : BottomNavigationView = findViewById (R.id.bottom_navigation)
         bottom_navigation.setOnNavigationItemSelectedListener {

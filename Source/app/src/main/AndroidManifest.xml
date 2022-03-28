@@ -11,13 +11,16 @@
         android:theme="@style/Theme.DreamsX">
         <activity
             android:name=".AddEditNoteActivity"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".StatisticsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".SettingsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

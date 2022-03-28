@@ -30,6 +30,7 @@ class AddEditNoteActivity : AppCompatActivity() {
 
         val noteType = intent.getStringExtra("noteType")
         if (noteType.equals("Edit")){
+            supportActionBar?.title = "Редактирование сна"
             val noteTitle = intent.getStringExtra("noteTitle")
             val noteDesc = intent.getStringExtra("noteDescription")
             noteID = intent.getIntExtra("noteID", -1)
@@ -38,6 +39,7 @@ class AddEditNoteActivity : AppCompatActivity() {
             noteDescriptionEdit.setText(noteDesc)
 
         } else  {
+            supportActionBar?.title = "Создание сна"
             addUpdateButton.setText("Сохранить сон")
         }
 
