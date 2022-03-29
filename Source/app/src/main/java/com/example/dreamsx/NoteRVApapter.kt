@@ -17,10 +17,12 @@ class NoteRVApapter(
 
     private val allNotes = ArrayList<Note>()
 
+    //Отображение превью снов на главном экране
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val noteTV = itemView.findViewById<TextView>(R.id.idTVNoteTitle)
         val timeTV = itemView.findViewById<TextView>(R.id.idTVTimeStamp)
         val deleteTV = itemView.findViewById<ImageView>(R.id.IVDelete)
+        val tagTV = itemView.findViewById<TextView>(R.id.idTVTag)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,6 +33,7 @@ class NoteRVApapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.noteTV.setText(allNotes.get(position).notesTitle)
         holder.timeTV.setText("Last updated : "+allNotes.get(position).timeStamp)
+        holder.tagTV.setText(allNotes.get(position).noteTags)
 
         holder.deleteTV.setOnClickListener{
             noteClickDeleteInterface.onDeleteClick(allNotes.get(position))
