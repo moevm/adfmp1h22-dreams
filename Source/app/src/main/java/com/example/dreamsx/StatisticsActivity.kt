@@ -13,5 +13,6 @@ class StatisticsActivity : AppCompatActivity() {
         supportActionBar?.title = "Статистика"
 
 
+
     }
 }

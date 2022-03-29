@@ -50,35 +50,48 @@
         android:text="Видели знакомых?"
         android:textColor="@color/white" />
 
-    <RadioButton
-        android:id="@+id/radioBtnYes"
+
+    <RadioGroup
+        android:id="@+id/precisionRadioGroup"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_below="@id/idQuestionLabel"
-        android:layout_alignLeft="@id/idQuestionLabel"
-        android:textSize="11dp"
-        android:text="Да"
-        android:textColor="@color/white">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_below="@id/idQuestionLabel" >
 
-    </RadioButton>
+        <RadioButton
+            android:id="@+id/idRadioBtnYes"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_below="@id/idQuestionLabel"
+            android:layout_alignLeft="@id/idQuestionLabel"
+            android:textColor="@color/white"
+            android:textSize="11dp">
 
-    <RadioButton
-        android:id="@+id/idRadioBtnNo"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_below="@id/radioBtnYes"
-        android:layout_alignLeft="@id/idQuestionLabel"
-        android:text="Нет"
-        android:textSize="11dp"
-        android:textColor="@color/white">
+        </RadioButton>
 
-    </RadioButton>
+        <RadioButton
+            android:id="@+id/idRadioBtnNo"
+            android:enabled="true"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@id/idRadioBtnYes"
+            android:layout_alignLeft="@id/idQuestionLabel"
+            android:text="Нет"
+            android:textSize="11dp"
+            android:textColor="@color/white">
+
+        </RadioButton>
+
+
+    </RadioGroup>
+
 
     <EditText
         android:id="@+id/idEditNotePrecisionComments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idRadioBtnNo"
+        android:layout_below="@id/precisionRadioGroup"
         android:layout_alignLeft="@id/idQuestionLabel"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
@@ -98,9 +111,9 @@
         android:layout_below="@id/idEditNotePrecisionComments"
 
         android:layout_marginStart="120dp"
-        android:layout_marginEnd="100dp"
-
         android:layout_marginTop="1dp"
+
+        android:layout_marginEnd="100dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/custom_button_back"
         android:text="Далее"
@@ -113,39 +126,50 @@
         android:layout_height="wrap_content"
 
         android:layout_below="@id/idBtnNextPrecision"
-        android:layout_marginStart="8dp"
-        android:textSize="10dp"
-        android:layout_marginTop="3dp"
-
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="8dp"
         android:text="Настроение во время сна:"
-        android:textColor="@color/white" />
 
-    <ImageButton
-        android:id="@+id/idBtnMoodGood"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_below="@id/idBtnNextPrecision"
-        android:layout_marginLeft="20dp"
+        android:textColor="@color/white"
+        android:textSize="10dp" />
+
+    <RadioGroup
+        android:id="@+id/moodRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="0dp"
         android:layout_toRightOf="@id/moodLabel"
-        android:src="@drawable/smilegood" />
+        android:layout_below="@id/idBtnNextPrecision" >
 
-    <ImageButton
-        android:id="@+id/idBtnMoodMiddle"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_below="@id/idBtnNextPrecision"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@id/idBtnMoodGood"
-        android:src="@drawable/smileneutral" />
+        <RadioButton
+            android:id="@+id/radio_good"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginLeft="2dp"
+            android:drawableRight="@drawable/smilegood"
+            android:layout_weight="1" />
 
-    <ImageButton
-        android:id="@+id/idBtnMoodBad"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_below="@id/idBtnNextPrecision"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@id/idBtnMoodMiddle"
-        android:src="@drawable/smileangry" />
+        <RadioButton
+            android:id="@+id/radio_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginLeft="2dp"
+            android:drawableRight="@drawable/smileneutral"
+            android:layout_weight="1"
+            android:layout_toRightOf="@id/radio_good"/>
+
+        <RadioButton
+            android:id="@+id/radio_sad"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginLeft="2dp"
+            android:drawableRight="@drawable/smileangry"
+            android:layout_weight="1"
+            android:layout_toRightOf="@id/radio_good"/>
+
+    </RadioGroup>
+
 
     <EditText
         android:id="@+id/idEditNoteDescription"
@@ -153,7 +177,7 @@
         android:layout_height="match_parent"
 
         android:layout_above="@+id/idBtnAddUpdate"
-        android:layout_below="@id/idBtnMoodBad"
+        android:layout_below="@id/moodRadioGroup"
         android:layout_marginStart="10dp"
 
         android:layout_marginTop="10dp"
@@ -168,6 +192,7 @@
         android:singleLine="false"
         android:textColor="@color/white"
         android:textColorHint="@color/white" />
+
 
 
     <Button
@@ -185,7 +210,9 @@
         android:text="Сохранить сон"
         android:textAllCaps="false" />
 
-
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>
