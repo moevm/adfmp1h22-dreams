@@ -9,12 +9,9 @@ class StatisticsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.title = "Статистика"
 
-        var backToMainBtn: Button = findViewById (R.id.btnBackFromStat)
-        backToMainBtn.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+
     }
 }

@@ -7,30 +7,21 @@
     tools:context=".StatisticsActivity">
 
 
-    <Button
-        android:id="@+id/btnBackFromStat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Назад"
-        android:src="@drawable/ic_point_green"
-        tools:layout_editor_absoluteX="13dp" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
 
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="2dp"
-        >
+        tools:layout_editor_absoluteY="2dp">
 
         <Button
             android:id="@+id/buttonYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="Год"
             app:layout_constraintStart_toEndOf="@+id/buttonMonth"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,8 +30,9 @@
             android:id="@+id/buttonMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+
             android:text="Месяц"
             app:layout_constraintStart_toEndOf="@+id/buttonWeek"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,8 +41,8 @@
             android:id="@+id/buttonWeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="Неделя"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -61,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Количество снов: 2"
+            android:layout_marginLeft="8dp"
             android:textColor="#000000"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/buttonWeek"
@@ -74,6 +67,7 @@
             android:layout_marginTop="12dp"
             android:background="#DDD8D8"
             android:ems="10"
+
             android:inputType="textPersonName"
             android:text="#Отпуск"
             android:textColor="#939191"
@@ -141,8 +135,10 @@
                 android:src="@drawable/ic_point_red"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.38"
+                app:layout_constraintStart_toEndOf="@+id/textMiddleDreams2"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.484" />
+                app:layout_constraintVertical_bias="0.363" />
 
             <ImageView
                 android:id="@+id/imageView2"
