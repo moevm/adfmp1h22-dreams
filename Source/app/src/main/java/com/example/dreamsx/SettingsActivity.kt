@@ -52,7 +52,23 @@ class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListene
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {}
 
-    override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {}
+    @SuppressLint("UseSwitchCompatOrMaterialCode", "SetTextI18n")
+    override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
+        Log.d("timeTag", p1.toString())
+        Log.d("timeTag", p2.toString())
+        val p1format = p1.toString().padStart(2, '0')
+        val p2format = p2.toString().padStart(2, '0')
+
+        val textTime = findViewById<TextView>(R.id.textTime)
+        textTime.text = "$p1format:$p2format"
+
+        hour = p1
+        minutes = p2
+
+        val switch = findViewById<Switch>(R.id.switch1)
+        if(switch.isChecked)
+            onChecked()
+    }
 
     @SuppressLint("UnspecifiedImmutableFlag")
     fun onChecked(){
