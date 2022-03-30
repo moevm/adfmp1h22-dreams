@@ -46,4 +46,24 @@ class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListene
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {}
 
     override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {}
+
+    @SuppressLint("UnspecifiedImmutableFlag")
+    fun onChecked(){
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val notificationIntent = Intent("android.media.action.DISPLAY_NOTIFICATION")
+        notificationIntent.addCategory("android.intent.category.DEFAULT")
+
+        val broadcast = PendingIntent.getBroadcast(
+            this,
+            100,
+            notificationIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val cal: Calendar = Calendar.getInstance()
+        cal.set(Calendar.HOUR, hour)
+        cal.set(Calendar.MINUTE, minutes)
+        cal.set(Calendar.SECOND, 0)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, broadcast)
+    }
 }
