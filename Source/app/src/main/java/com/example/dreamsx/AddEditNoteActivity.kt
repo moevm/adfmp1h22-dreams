@@ -15,11 +15,40 @@ class AddEditNoteActivity : AppCompatActivity() {
     lateinit var noteMoodEdit : DreamMood
 
     lateinit var addUpdateButton : Button
+
     lateinit var viewModel: NoteViewModel
     var noteID = -1;
 
+    var predictionSelected: Boolean = false
+    var predictionAnswers: String = ""
+    var numberOfCountPrecQuestion: Int = 0
 
-    var precisionSelected: Boolean = false
+    //вопросы при создании сна
+    lateinit var precisionYesBtn:RadioButton
+    lateinit var precisionNoBtn:RadioButton
+    lateinit var questionLabel:TextView
+    lateinit var answerLabel:EditText
+    lateinit var precionNextBtn: Button
+
+    val predictionQuestionsList:List<String> = listOf(
+        "Вы были в обычном для себя месте?",
+        "Видели знакомых?",
+        )
+
+    val predictionHintsList:List<String> = listOf(
+        "Введите название места",
+        "Введите имя знакомого",
+    )
+
+    val predictionAnswerPositiveList:List<String> = listOf(
+        "Был рядом мой приятель ",
+        "Я в обычном для себя месте ",
+    )
+
+    val predictionAnswerNegativeList:List<String> = listOf(
+        "Был рядом мой приятель ",
+        "Я оказался на новой для себя локации ",
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,21 +61,24 @@ class AddEditNoteActivity : AppCompatActivity() {
         noteTagEdit = findViewById(R.id.idEditNoteTag)
         //noteMoodEdit = findViewById(R.id.idEditNoteDescription)
 
+        val dreamMoodRadioGroup: RadioGroup = findViewById<RadioGroup>(R.id.moodRadioGroup)
         val precisionRadioGroup: RadioGroup = findViewById<RadioGroup>(R.id.precisionRadioGroup)
-        val precisionYesBtn:RadioButton = findViewById<RadioButton>(R.id.idRadioBtnYes)
+        precisionYesBtn = findViewById<RadioButton>(R.id.idRadioBtnYes)
+        precisionNoBtn= findViewById<RadioButton>(R.id.idRadioBtnNo)
+        questionLabel = findViewById<TextView>(R.id.idQuestionLabel)
+        answerLabel = findViewById<EditText>(R.id.idEditPrcsAnswer)
+        answerLabel.isActivated = false
 
-        val precisionNoBtn:RadioButton = findViewById<RadioButton>(R.id.idRadioBtnNo)
-        val precionNextBtn: Button = findViewById<Button>(R.id.idBtnNextPrecision)
+        precionNextBtn = findViewById<Button>(R.id.idBtnNextPrecision)
 
         val moodMiddleBtn:RadioButton = findViewById<RadioButton>(R.id.radio_middle)
 
         precisionNoBtn.isChecked = true
         precionNextBtn.isEnabled = false
+        answerLabel.isEnabled = false
 
         moodMiddleBtn.isChecked = true
         noteMoodEdit = DreamMood.MIDDLE
-
-        val dreamMoodRadioGroup: RadioGroup = findViewById<RadioGroup>(R.id.moodRadioGroup)
 
         addUpdateButton = findViewById(R.id.idBtnAddUpdate)
 
@@ -75,28 +107,40 @@ class AddEditNoteActivity : AppCompatActivity() {
             addUpdateButton.setText("Сохранить сон")
         }
 
+        //Заполнение предсказания
+        // Get radio group selected item using on checked change listener
+        precisionRadioGroup.setOnCheckedChangeListener(
+            RadioGroup.OnCheckedChangeListener { group, checkedId ->
+                val radio: RadioButton = findViewById(checkedId)
 
+                if (checkedId == R.id.idRadioBtnYes){
+                    NextPrecision()
+                    predictionSelected = true
+                    precionNextBtn.isEnabled = true
+                    Toast.makeText(this, "*checkTRUE", Toast.LENGTH_LONG).show()
+                    answerLabel.isEnabled = true
+                }
+                else if (checkedId == R.id.idRadioBtnNo){
+                    predictionSelected = false
+                    precionNextBtn.isEnabled = false
+                    Toast.makeText(this, "*checkFALSE", Toast.LENGTH_LONG).show()
+                    answerLabel.isEnabled = false
+                }
+            })
+
+
+
+        //Кнопка Далее для следующего вопроса.
+        precionNextBtn.setOnClickListener {
+            NextPrecision()
+        }
+
+        //Кнопка добавления/обновления сна.
         addUpdateButton.setOnClickListener {
             //---*******************************************************************************
             val noteTitle = noteTitleEdit.text.toString()
             val noteDescription = noteDescriptionEdit.text.toString()
             val noteTag = noteTagEdit.text.toString()
-
-
-            //Заполнение предсказания
-            val selectPrecionBtn:Int = precisionRadioGroup!!.checkedRadioButtonId
-            val selectedPrecBtn = findViewById<RadioButton>(selectPrecionBtn)
-
-            if (selectedPrecBtn.id == R.id.idRadioBtnYes){
-                precisionSelected = true
-                precionNextBtn.isEnabled = true
-                //Toast.makeText(this, "checkTRUE", Toast.LENGTH_LONG).show()
-            }
-            else if (selectedPrecBtn.id == R.id.idRadioBtnNo){
-                precisionSelected = false
-                precionNextBtn.isEnabled = false
-                //Toast.makeText(this, "checkFALSE", Toast.LENGTH_LONG).show()
-            }
 
             //Заполнение настроения
 
@@ -105,15 +149,12 @@ class AddEditNoteActivity : AppCompatActivity() {
 
             if (selectedMoodBtn.id == R.id.radio_good){
                 noteMoodEdit = DreamMood.COOL
-                //Toast.makeText(this, "GOOD!!!!", Toast.LENGTH_LONG).show()
             }
             else if (selectedMoodBtn.id == R.id.radio_middle){
                 noteMoodEdit = DreamMood.MIDDLE
-                //Toast.makeText(this, "MIDDLE!!!!", Toast.LENGTH_LONG).show()
             }
             else if (selectedMoodBtn.id == R.id.radio_sad){
                 noteMoodEdit = DreamMood.BAD
-                //Toast.makeText(this, "SAD!!!!!", Toast.LENGTH_LONG).show()
             }
 
             if (noteType.equals("Edit")){
@@ -127,18 +168,59 @@ class AddEditNoteActivity : AppCompatActivity() {
                     viewModel.updateNote(updateNote)
                     Toast.makeText(this, "Сон обновлен...", Toast.LENGTH_LONG).show()
                 }
-            } else {
+            }
+            else {
                 if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() ){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
 
-                    print("** * Creating new noteTag: $noteTag")
-                    viewModel.addNote(Note(noteTitle, noteDescription, currentDate, noteTag, noteMoodEdit))   ///////////////////
+
+                    var noteFinalDescription: String = ""
+
+                    //Добавляем к описанию предсказание сна
+                    if (predictionAnswers.isNotEmpty())
+                        noteFinalDescription += predictionAnswers
+
+                    noteFinalDescription += noteDescription // Добавляем описание сна
+
+                    viewModel.addNote(Note(noteTitle, noteFinalDescription, currentDate, noteTag, noteMoodEdit))
                     Toast.makeText(this, "Сон добавлен...", Toast.LENGTH_LONG).show()
                 }
             }
             startActivity(Intent(applicationContext, MainActivity::class.java))
             this.finish()
         }
+    }
+
+    private fun NextPrecision(){
+        predictionAnswers += createPrecision(numberOfCountPrecQuestion) //Добавляем текущие предсказание к строке
+        //Выключаем кн Далее если все вопросы заданы.
+        if (numberOfCountPrecQuestion == predictionQuestionsList.size-1){
+            precionNextBtn.isEnabled = false
+            return
+        }
+        answerLabel.clear() //Очищаем предыдущий ввод
+        numberOfCountPrecQuestion++; //Увеличиваем счетчик вопросов
+
+        Toast.makeText(this, predictionQuestionsList.size.toString(), Toast.LENGTH_LONG).show()
+    }
+
+    private fun createPrecision(indexOfQuestion: Int) : String {
+        var resStr:String
+
+        var selectedQuestion = predictionQuestionsList[indexOfQuestion]
+        questionLabel.text = selectedQuestion
+        answerLabel.isEnabled = true
+
+        //открывается поле для ввода.
+        answerLabel.hint = predictionHintsList[indexOfQuestion]
+        resStr = predictionAnswerPositiveList[indexOfQuestion] + answerLabel.text
+        return resStr
+    }
+
+
+
+    fun EditText.clear() {
+        text.clear()
     }
 }
