@@ -41,6 +41,13 @@ class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListene
             timePickerDialog.show()
         })
 
+        val switch = findViewById<Switch>(R.id.switch1)
+
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                onChecked()
+            }
+        }
     }
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {}
