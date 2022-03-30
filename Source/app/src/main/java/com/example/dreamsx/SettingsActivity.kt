@@ -26,6 +26,21 @@ class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListene
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Настройки"
 
+        val button = findViewById<Button>(R.id.btnPick)
+        button.setOnClickListener(View.OnClickListener {
+            val c = Calendar.getInstance()
+            val hour = c[Calendar.HOUR]
+            val minute = c[Calendar.MINUTE]
+            val timePickerDialog = TimePickerDialog(
+                this,
+                this,
+                hour,
+                minute,
+                DateFormat.is24HourFormat(this)
+            )
+            timePickerDialog.show()
+        })
+
     }
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {}
