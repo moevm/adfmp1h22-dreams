@@ -114,17 +114,15 @@ class AddEditNoteActivity : AppCompatActivity() {
                 val radio: RadioButton = findViewById(checkedId)
 
                 if (checkedId == R.id.idRadioBtnYes){
-                    NextPrecision()
-                    predictionSelected = true
-                    precionNextBtn.isEnabled = true
+
+                    turnOnPredictionBlock(true)
+
                     Toast.makeText(this, "*checkTRUE", Toast.LENGTH_LONG).show()
                     answerLabel.isEnabled = true
                 }
                 else if (checkedId == R.id.idRadioBtnNo){
-                    predictionSelected = false
-                    precionNextBtn.isEnabled = false
+                    turnOnPredictionBlock(false)
                     Toast.makeText(this, "*checkFALSE", Toast.LENGTH_LONG).show()
-                    answerLabel.isEnabled = false
                 }
             })
 
@@ -132,7 +130,7 @@ class AddEditNoteActivity : AppCompatActivity() {
 
         //Кнопка Далее для следующего вопроса.
         precionNextBtn.setOnClickListener {
-            NextPrecision()
+            NextPrediction()
         }
 
         //Кнопка добавления/обновления сна.
@@ -192,8 +190,8 @@ class AddEditNoteActivity : AppCompatActivity() {
         }
     }
 
-    private fun NextPrecision(){
-        predictionAnswers += createPrecision(numberOfCountPrecQuestion) //Добавляем текущие предсказание к строке
+    private fun NextPrediction(){
+        predictionAnswers += createPrediction(numberOfCountPrecQuestion) //Добавляем текущие предсказание к строке
         //Выключаем кн Далее если все вопросы заданы.
         if (numberOfCountPrecQuestion == predictionQuestionsList.size-1){
             precionNextBtn.isEnabled = false
@@ -205,8 +203,8 @@ class AddEditNoteActivity : AppCompatActivity() {
         Toast.makeText(this, predictionQuestionsList.size.toString(), Toast.LENGTH_LONG).show()
     }
 
-    private fun createPrecision(indexOfQuestion: Int) : String {
-        var resStr:String
+    private fun createPrediction(indexOfQuestion: Int) : String {
+        var resStr:String = ""
 
         var selectedQuestion = predictionQuestionsList[indexOfQuestion]
         questionLabel.text = selectedQuestion
@@ -214,13 +212,43 @@ class AddEditNoteActivity : AppCompatActivity() {
 
         //открывается поле для ввода.
         answerLabel.hint = predictionHintsList[indexOfQuestion]
-        resStr = predictionAnswerPositiveList[indexOfQuestion] + answerLabel.text
+
+        var resAnswer: String
+        if (predictionSelected)
+            resAnswer = predictionAnswerPositiveList[indexOfQuestion]
+        else
+            resAnswer = predictionAnswerNegativeList[indexOfQuestion]
+
+        resStr = resAnswer + answerLabel.text
         return resStr
     }
 
+    var flagOnlyOnce: Boolean = true
 
+    private fun turnOnPredictionBlock(turn: Boolean){
+        predictionSelected = turn
+        //Далее активации/деактивируется только на 1 вопросе
+        if (numberOfCountPrecQuestion >= 1)
+            flagOnlyOnce = false
 
-    fun EditText.clear() {
+        if (numberOfCountPrecQuestion==0 && predictionSelected) {
+            NextPrediction()
+
+        }
+        else if(!predictionSelected && flagOnlyOnce){ // of - выключаем.
+            numberOfCountPrecQuestion=0 //
+            questionLabel.text=""
+            answerLabel.clear()
+            answerLabel.hint = ""
+        }
+        precionNextBtn.isEnabled = turn
+        answerLabel.isEnabled = turn
+
+    }
+
+    private fun EditText.clear() {
         text.clear()
     }
+
+
 }
