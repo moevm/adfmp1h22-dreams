@@ -37,33 +37,3 @@ abstract class NoteDatabase: RoomDatabase() {
 
     }
 }
-
-// Database class after the version update.
-//@Database(
-//    version = 2,
-//    entities = [Note::class],
-//    autoMigrations = [
-//        AutoMigration (from = 1, to = 2)
-//    ]
-//)
-
-//abstract class NoteDatabase2 : RoomDatabase() {
-//    abstract fun getNotesDao(): NotesDao
-//
-//    companion object {
-//        @Volatile
-//        private var INSTANCE: NoteDatabase? = null
-//
-//        fun getDatbase(context: Context): NoteDatabase {
-//            return INSTANCE ?: synchronized(this) {
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    NoteDatabase::class.java,
-//                    "note_database"
-//                ).build()
-//                INSTANCE = instance
-//                instance
-//            }
-//        }
-//    }
-//}

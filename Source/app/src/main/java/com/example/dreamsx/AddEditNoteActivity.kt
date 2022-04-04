@@ -33,21 +33,25 @@ class AddEditNoteActivity : AppCompatActivity() {
     val predictionQuestionsList:List<String> = listOf(
         "Вы были в обычном для себя месте?",
         "Видели знакомых?",
+        "3 ",
         )
 
     val predictionHintsList:List<String> = listOf(
         "Введите название места",
         "Введите имя знакомого",
+        "3 ",
     )
 
     val predictionAnswerPositiveList:List<String> = listOf(
         "Был рядом мой приятель ",
         "Я в обычном для себя месте ",
+        "3 ",
     )
 
     val predictionAnswerNegativeList:List<String> = listOf(
         "Был рядом мой приятель ",
         "Я оказался на новой для себя локации ",
+        "3 ",
     )
 
 
@@ -233,9 +237,9 @@ class AddEditNoteActivity : AppCompatActivity() {
 
         if (numberOfCountPrecQuestion==0 && predictionSelected) {
             NextPrediction()
-
         }
-        else if(!predictionSelected && flagOnlyOnce){ // of - выключаем.
+
+        else if(!predictionSelected && numberOfCountPrecQuestion<2 ){ // of - выключаем.
             numberOfCountPrecQuestion=0 //
             questionLabel.text=""
             answerLabel.clear()

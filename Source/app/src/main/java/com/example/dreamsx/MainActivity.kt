@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,19 +24,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
         supportActionBar?.title = "Дневник снов"
 
         val bottom_navigation : BottomNavigationView = findViewById (R.id.bottom_navigation)
-        bottom_navigation.setOnNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.ic_settings -> {
-                    val intent = Intent(this, SettingsActivity::class.java)
-                    startActivity(intent)
-                }
-                R.id.ic_statistics -> {
-                    val intent = Intent(this, StatisticsActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-            true
-        }
+
 
         notesRV = findViewById<RecyclerView>(R.id.idRVNotes)
         addFAB = findViewById<FloatingActionButton>(R.id.idFABAddNote)
@@ -57,6 +46,23 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
             this.finish()
         }
 
+        val countOfDreams: Int = noteRVApapter.getCountOfDreams()
+
+
+        bottom_navigation.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.ic_settings -> {
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.ic_statistics -> {
+                    val intent = Intent(this, StatisticsActivity::class.java)
+                    intent.putExtra("countOfDreams", countOfDreams.toString())
+                    startActivity(intent)
+                }
+            }
+            true
+        }
     }
 
     override fun onNoteClick(note: Note) {

@@ -53,6 +53,12 @@ class NoteRVApapter(
         allNotes.addAll(newList)
         notifyDataSetChanged()
     }
+
+    fun getCountOfDreams(): Int {
+        return allNotes.size
+    }
+
+
 }
 
 interface NoteClickDeleteInterface{
