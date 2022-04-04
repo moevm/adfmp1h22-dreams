@@ -33,11 +33,21 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
         val noteRVApapter = NoteRVApapter(this,this, this)
         notesRV.adapter = noteRVApapter
 
+        // Получение количества снов
+        var countOfDreams: Int = 0  //noteRVApapter.getCountOfDreams()
+        var countOfPositiveDreams : Int = 0
+        var countOfMiddleDreams : Int = 0
+        var countOfNegativeDreams : Int = 0
+
         viewModal = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModel::class.java)
         viewModal.allNotes.observe(this, Observer{ list ->
             list?.let{
                 noteRVApapter.updateList(it)
             }
+            countOfDreams = noteRVApapter.getCountOfDreams(list)
+            countOfPositiveDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.COOL })
+            countOfMiddleDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.MIDDLE })
+            countOfNegativeDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.BAD })
         })
 
         addFAB.setOnClickListener{
@@ -46,7 +56,6 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
             this.finish()
         }
 
-        val countOfDreams: Int = noteRVApapter.getCountOfDreams()
 
 
         bottom_navigation.setOnNavigationItemSelectedListener {
@@ -58,6 +67,10 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
                 R.id.ic_statistics -> {
                     val intent = Intent(this, StatisticsActivity::class.java)
                     intent.putExtra("countOfDreams", countOfDreams.toString())
+                    intent.putExtra("countOfPositiveDreams", countOfPositiveDreams.toString())
+                    intent.putExtra("countOfMiddleDreams", countOfMiddleDreams.toString())
+                    intent.putExtra("countOfNegativeDreams", countOfNegativeDreams.toString())
+
                     startActivity(intent)
                 }
             }

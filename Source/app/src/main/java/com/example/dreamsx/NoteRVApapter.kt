@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 class NoteRVApapter(
     val context: Context,
-    val noteClickInterface: NoteClickInterface,
-    val noteClickDeleteInterface: NoteClickDeleteInterface
+    private val noteClickInterface: NoteClickInterface,
+    private val noteClickDeleteInterface: NoteClickDeleteInterface,
+    //private val noteGetStatistics: NoteGetStatisticsStatistics
 ) : RecyclerView.Adapter<NoteRVApapter.ViewHolder>() {
 
     private val allNotes = ArrayList<Note>()
@@ -54,8 +55,8 @@ class NoteRVApapter(
         notifyDataSetChanged()
     }
 
-    fun getCountOfDreams(): Int {
-        return allNotes.size
+    fun getCountOfDreams(newList : List<Note>): Int {
+        return allNotes.count()
     }
 
 
@@ -67,4 +68,9 @@ interface NoteClickDeleteInterface{
 
 interface NoteClickInterface{
     fun onNoteClick(note: Note)
+}
+
+interface NoteGetStatisticsStatistics{
+    fun getCountOfDreams(note: Note) : Int
+
 }

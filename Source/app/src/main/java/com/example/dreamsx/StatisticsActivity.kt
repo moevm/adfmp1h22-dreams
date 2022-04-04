@@ -8,15 +8,13 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
 
-lateinit var countOfDreamTitle : TextView
 
-//textDreamsTotalCount
 class StatisticsActivity() : AppCompatActivity() {
 
-    private var countOfDreams: Int = 0
-    init {
-        //this.countOfDreams = countOfDreams
-    }
+    lateinit var countOfDreamTitle : TextView
+    lateinit var countOfPositiveDreamsTitle : TextView
+    lateinit var countOfMiddleDreamsTitle : TextView
+    lateinit var countOfNegativeDreamsTitle : TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,12 +23,20 @@ class StatisticsActivity() : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Статистика"
 
-        var x = getIntent().getStringExtra("countOfDreams")
+        val countOfDreams = intent.getStringExtra("countOfDreams")
+        val countOfPositiveDreams = intent.getStringExtra("countOfPositiveDreams")
+        val countOfMiddleDreams = intent.getStringExtra("countOfMiddleDreams")
+        val countOfNegativeDreams = intent.getStringExtra("countOfNegativeDreams")
 
         countOfDreamTitle = findViewById<TextView>(R.id.textDreamsTotalCount)
+        countOfPositiveDreamsTitle = findViewById<TextView>(R.id.textPositiveDreams)
+        countOfMiddleDreamsTitle = findViewById<TextView>(R.id.textMiddleDreams)
+        countOfNegativeDreamsTitle = findViewById<TextView>(R.id.textNegativeDreams)
 
-        countOfDreamTitle.text = x
-        //countOfDreamTitle.text = countOfDreams.toString()
+        countOfDreamTitle.text = countOfDreams
+        countOfPositiveDreamsTitle.text = countOfPositiveDreams
+        countOfMiddleDreamsTitle.text = countOfMiddleDreams
+        countOfNegativeDreamsTitle.text = countOfNegativeDreams
 
     }
 }
