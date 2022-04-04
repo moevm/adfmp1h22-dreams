@@ -27,11 +27,8 @@ class StatisticsActivity() : AppCompatActivity() {
         val countOfPositiveDreams = intent.getStringExtra("countOfPositiveDreams")
         val countOfMiddleDreams = intent.getStringExtra("countOfMiddleDreams")
         val countOfNegativeDreams = intent.getStringExtra("countOfNegativeDreams")
-        val arrayOfTags: Array<String> = intent.getStringArrayExtra("arrayOfTags") as Array<String>
+        val arrayOfTags: Array<String> = intent.getStringArrayExtra("arrayOfTags") as Array<String> //Теги 
 
-        for(el in arrayOfTags){
-            print(el)
-        }
 
         countOfDreamTitle = findViewById<TextView>(R.id.textDreamsTotalCount)
         countOfPositiveDreamsTitle = findViewById<TextView>(R.id.textPositiveDreamsCount)
