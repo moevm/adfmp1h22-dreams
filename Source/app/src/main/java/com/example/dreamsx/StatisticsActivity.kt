@@ -17,17 +17,17 @@ import com.github.mikephil.charting.utils.ColorTemplate
 
 class StatisticsActivity() : AppCompatActivity() {
 
-    lateinit var countOfDreamTitle : TextView
-    lateinit var countOfPositiveDreamsTitle : TextView
-    lateinit var countOfMiddleDreamsTitle : TextView
-    lateinit var countOfNegativeDreamsTitle : TextView
-    lateinit var topTagsTitle : TextView // топ тегов
+    private lateinit var countOfDreamTitle : TextView
+    private lateinit var countOfPositiveDreamsTitle : TextView
+    private lateinit var countOfMiddleDreamsTitle : TextView
+    private lateinit var countOfNegativeDreamsTitle : TextView
+    private lateinit var topTagsTitle : TextView // топ тегов
 
-    lateinit var weekBtn : Button
-    lateinit var monthBtn : Button
-    lateinit var yearBtn : Button
+    private lateinit var weekBtn : Button
+    private lateinit var monthBtn : Button
+    private lateinit var yearBtn : Button
 
-    lateinit var pieChart: PieChart
+    private lateinit var pieChart: PieChart
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,14 +57,22 @@ class StatisticsActivity() : AppCompatActivity() {
         countOfMiddleDreamsTitle.text = countOfMiddleDreams
         countOfNegativeDreamsTitle.text = countOfNegativeDreams
 
-        createPieChart()
+
+        //Подготовка данных для диаграммы
+        var goodPct : Float = getPercentage(countOfPositiveDreams!!.toInt(), countOfDreams!!.toInt())
+        var middlePct : Float = getPercentage(countOfMiddleDreams!!.toInt(), countOfDreams!!.toInt())
+        var badPct : Float = getPercentage(countOfNegativeDreams!!.toInt(), countOfDreams!!.toInt())
+
+        createPieChart(goodPct, middlePct, badPct)
 
     }
 
-    //private fun getPercantage :
+    private fun getPercentage(current: Int, total: Int) : Float {
+        return ((current*100) / total ).toFloat()
+    }
 
     //Отрисова диаграммы статистики
-    private fun createPieChart() {
+    private fun createPieChart(goodPct: Float, middlePct: Float, badPct: Float) {
 
         val pieChart: PieChart = this.pieChart
         pieChart.description.isEnabled = false
@@ -80,16 +88,16 @@ class StatisticsActivity() : AppCompatActivity() {
 
         //Размер и количесво дуг
         val pieData = mutableListOf<PieEntry>()
-        pieData.add(PieEntry(40f ))
-        pieData.add(PieEntry(30f ))
-        pieData.add(PieEntry(30f ))
-
+        pieData.add(PieEntry(goodPct))
+        pieData.add(PieEntry(middlePct))
+        pieData.add(PieEntry(badPct))
 
         // Подписи к диаграмме
-        val dataSet = PieDataSet(pieData, "Hello")
+        val dataSet = PieDataSet(pieData, "")
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
-        dataSet.colors = ColorTemplate.JOYFUL_COLORS.toMutableList()
+        //dataSet.colors = ColorTemplate.JOYFUL_COLORS.toMutableList()
+        dataSet.color = Color.GREEN
 
 
         pieChart.data = PieData(dataSet)
