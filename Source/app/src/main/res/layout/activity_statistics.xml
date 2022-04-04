@@ -47,17 +47,47 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <TextView
+            android:id="@+id/textDreamsTotalTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Количество снов за"
+            android:textColor="#000000"
+            android:textSize="16sp"
+
+            app:layout_constraintTop_toBottomOf="@+id/buttonWeek"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <TextView
+            android:id="@+id/textDreamsPeriodTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="8dp"
+            android:text="неделю:"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@+id/textDreamsTotalTitle"
+            app:layout_constraintTop_toBottomOf="@+id/buttonWeek"
+            tools:layout_editor_absoluteX="16dp" />
+
         <TextView
             android:id="@+id/textDreamsTotalCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="2dp"
             android:layout_marginTop="8dp"
-            android:text="Количество снов: 2"
+            android:text=" 2"
             android:textColor="#000000"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/buttonWeek"
+            app:layout_constraintLeft_toRightOf="@+id/textDreamsPeriodTitle"
+            app:layout_constraintTop_toBottomOf="@+id/buttonMonth"
             tools:layout_editor_absoluteX="16dp" />
+
 
         <EditText
             android:id="@+id/TegsList"
@@ -71,8 +101,10 @@
             android:inputType="textPersonName"
             android:text="#Отпуск"
             android:textColor="#939191"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textTagsType" />
+
 
         <TextView
             android:id="@+id/textTagsType"
@@ -91,41 +123,75 @@
             android:layout_height="106dp"
             android:layout_marginTop="12dp"
             android:background="#DDD8D8"
-            app:layout_constraintTop_toBottomOf="@+id/textDreamsTotalCount"
+            app:layout_constraintTop_toBottomOf="@+id/textDreamsTotalTitle"
             tools:layout_editor_absoluteX="0dp">
 
             <TextView
-                android:id="@+id/textMiddleDreams"
+                android:id="@+id/textMiddleDreamsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="12dp"
-                android:text="Обычные сны: 0"
+                android:text="Обычные сны:"
                 android:textColor="#000000"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textPositiveDreams" />
+                app:layout_constraintTop_toBottomOf="@+id/textPositiveDreamsTitle" />
 
             <TextView
-                android:id="@+id/textPositiveDreams"
+                android:id="@+id/textMiddleDreamsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="12dp"
+                android:text="0"
+                android:textColor="#000000"
+                app:layout_constraintLeft_toRightOf="@+id/textPositiveDreamsTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textPositiveDreamsTitle" />
+
+            <TextView
+                android:id="@+id/textPositiveDreamsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="12dp"
-                android:text="Позитивные сны: 0"
+                android:text="Позитивные сны: "
                 android:textColor="#000000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textNegativeDreams"
+                android:id="@+id/textPositiveDreamsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="12dp"
+                android:text="0"
+                android:textColor="#000000"
+                app:layout_constraintLeft_toRightOf="@+id/textPositiveDreamsTitle"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textNegativeDreamsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:text="Негативные сны: 2"
+                android:text="Негативные сны: "
                 android:textColor="#000000"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textMiddleDreams" />
+                app:layout_constraintTop_toBottomOf="@+id/textMiddleDreamsTitle" />
+
+            <TextView
+                android:id="@+id/textNegativeDreamsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="8dp"
+                android:text="2"
+                android:textColor="#000000"
+                app:layout_constraintLeft_toRightOf="@+id/textPositiveDreamsTitle"
+
+                app:layout_constraintTop_toBottomOf="@+id/textMiddleDreamsTitle" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -136,7 +202,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.38"
-                app:layout_constraintStart_toEndOf="@+id/textMiddleDreams"
+                app:layout_constraintStart_toEndOf="@+id/textMiddleDreamsTitle"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.363" />
 
@@ -147,7 +213,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_point_green"
-                app:layout_constraintEnd_toStartOf="@+id/textPositiveDreams"
+                app:layout_constraintEnd_toStartOf="@+id/textPositiveDreamsTitle"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -159,7 +225,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_point_yellow"
-                app:layout_constraintEnd_toStartOf="@+id/textMiddleDreams"
+                app:layout_constraintEnd_toStartOf="@+id/textMiddleDreamsTitle"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
             <ImageView
@@ -169,7 +235,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_point_red"
-                app:layout_constraintEnd_toStartOf="@+id/textNegativeDreams"
+                app:layout_constraintEnd_toStartOf="@+id/textNegativeDreamsTitle"
                 app:layout_constraintTop_toBottomOf="@+id/imageView4" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

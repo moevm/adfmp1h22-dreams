@@ -34,10 +34,12 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
         notesRV.adapter = noteRVApapter
 
         // Получение количества снов
-        var countOfDreams: Int = 0  //noteRVApapter.getCountOfDreams()
+        var countOfDreams: Int = 0
         var countOfPositiveDreams : Int = 0
         var countOfMiddleDreams : Int = 0
         var countOfNegativeDreams : Int = 0
+
+        var listOfAllTags : Array<String> = arrayOf("")
 
         viewModal = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModel::class.java)
         viewModal.allNotes.observe(this, Observer{ list ->
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
             countOfPositiveDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.COOL })
             countOfMiddleDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.MIDDLE })
             countOfNegativeDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.BAD })
+            listOfAllTags = noteRVApapter.getAllTags(list.filter { it.noteTags != "" })
         })
 
         addFAB.setOnClickListener{
@@ -70,6 +73,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
                     intent.putExtra("countOfPositiveDreams", countOfPositiveDreams.toString())
                     intent.putExtra("countOfMiddleDreams", countOfMiddleDreams.toString())
                     intent.putExtra("countOfNegativeDreams", countOfNegativeDreams.toString())
+                    intent.putExtra("arrayOfTags", listOfAllTags)
 
                     startActivity(intent)
                 }

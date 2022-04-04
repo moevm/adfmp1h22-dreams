@@ -13,7 +13,6 @@ class NoteRVApapter(
     val context: Context,
     private val noteClickInterface: NoteClickInterface,
     private val noteClickDeleteInterface: NoteClickDeleteInterface,
-    //private val noteGetStatistics: NoteGetStatisticsStatistics
 ) : RecyclerView.Adapter<NoteRVApapter.ViewHolder>() {
 
     private val allNotes = ArrayList<Note>()
@@ -48,7 +47,6 @@ class NoteRVApapter(
     override fun getItemCount(): Int {
         return allNotes.size
     }
-
     fun updateList(newList : List<Note>){
         allNotes.clear()
         allNotes.addAll(newList)
@@ -56,8 +54,16 @@ class NoteRVApapter(
     }
 
     fun getCountOfDreams(newList : List<Note>): Int {
-        return allNotes.count()
+        return newList.count()
     }
+
+    fun getAllTags(newList : List<Note>) : Array<String>{
+        var tags : Array<String> = arrayOf()
+        for(element in newList)
+            tags += element.noteTags
+        return tags
+    }
+
 
 
 }
