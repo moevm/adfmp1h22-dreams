@@ -5,8 +5,6 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.core.view.size
 import com.github.mikephil.charting.charts.PieChart
@@ -23,6 +21,7 @@ class StatisticsActivity() : AppCompatActivity() {
     private lateinit var countOfMiddleDreamsTitle : TextView
     private lateinit var countOfNegativeDreamsTitle : TextView
     private lateinit var topTagsTitle : TextView // топ тегов
+    private lateinit var topTags : TextView
 
     private lateinit var weekBtn : Button
     private lateinit var monthBtn : Button
@@ -50,7 +49,8 @@ class StatisticsActivity() : AppCompatActivity() {
         countOfPositiveDreamsTitle = findViewById<TextView>(R.id.textPositiveDreamsCount)
         countOfMiddleDreamsTitle = findViewById<TextView>(R.id.textMiddleDreamsCount)
         countOfNegativeDreamsTitle = findViewById<TextView>(R.id.textNegativeDreamsCount)
-        topTagsTitle = findViewById<TextView>(R.id.tagsList)
+        topTagsTitle = findViewById<TextView>(R.id.textTagsType)
+        topTags = findViewById<TextView>(R.id.tagsList)
         pieChart = findViewById<PieChart>(R.id.pieChart)
 
         countOfDreamTitle.text = countOfDreams
@@ -72,7 +72,7 @@ class StatisticsActivity() : AppCompatActivity() {
         return ((current*100) / total ).toFloat()
     }
 
-    //Отрисова диаграммы статистики
+    //Отрисовка диаграммы статистики
     private fun createPieChart(goodPct: Float, middlePct: Float, badPct: Float) {
 
         val pieChart: PieChart = this.pieChart
