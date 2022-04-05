@@ -66,6 +66,8 @@ class StatisticsActivity() : AppCompatActivity() {
 
         createPieChart(goodPct, middlePct, badPct)
 
+        getTopTegs(arrayOfTags)
+
     }
 
     private fun getPercentage(current: Int, total: Int) : Float {
@@ -119,5 +121,13 @@ class StatisticsActivity() : AppCompatActivity() {
         pieChart.animateXY(2000,2000)
     }
 
-
+    private fun getTopTegs(tegs: Array<String>){
+        val countTegs = mutableMapOf<String, Int>()
+        for (teg in tegs){
+            if (!countTegs.containsKey(teg))
+                countTegs[teg] = 1
+            else
+                countTegs[teg] = countTegs.getValue(teg) + 1
+        }
+    }
 }
