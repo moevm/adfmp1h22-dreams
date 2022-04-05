@@ -132,5 +132,12 @@ class StatisticsActivity() : AppCompatActivity() {
 
         val values: MutableCollection<Int> = countTegs.values
         val maxValue = values.maxOrNull()
+
+        val topTegs: MutableList<String> = mutableListOf()
+        for (teg in countTegs){
+            val key: String = teg.key
+            if (countTegs[key] == maxValue)
+                topTegs.add(key)
+        }
     }
 }
