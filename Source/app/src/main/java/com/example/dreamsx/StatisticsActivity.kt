@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.core.view.size
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -80,11 +81,12 @@ class StatisticsActivity() : AppCompatActivity() {
         pieChart.dragDecelerationFrictionCoef = 0.99f
 
         pieChart.isDrawHoleEnabled = true
-        pieChart.setHoleColor(Color.parseColor("#533D2B"))
-        pieChart.transparentCircleRadius = 60f
+        pieChart.setHoleColor(Color.rgb(98, 0, 238))
+        pieChart.transparentCircleRadius = 24f
+        pieChart.holeRadius = 27f
         pieChart.centerText = "Good Job"
-        pieChart.setCenterTextColor(Color.GREEN)
-        pieChart.setCenterTextSize(50f)
+        //pieChart.setCenterTextColor(Color.GREEN)
+        pieChart.setCenterTextSize(0f)
 
         //Размер и количесво дуг
         val pieData = mutableListOf<PieEntry>()
@@ -96,15 +98,23 @@ class StatisticsActivity() : AppCompatActivity() {
         val dataSet = PieDataSet(pieData, "")
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
-        //dataSet.colors = ColorTemplate.JOYFUL_COLORS.toMutableList()
-        dataSet.color = Color.GREEN
+        var customColors: List<Int> = listOf(
+            Color.rgb(69, 243, 6),
+            Color.rgb(234, 203, 6),
+            Color.rgb(243, 6, 6)
+        )
+        dataSet.colors = customColors
+
 
 
         pieChart.data = PieData(dataSet)
+        pieChart.size
         //Подписи к дугам
 //        pieChart.data.setValueTextColor(Color.RED)
 //        pieChart.data.setValueTextSize(10f)
         pieChart.data.setValueTextSize(0f)
+        pieChart.legend.isEnabled = false
+        pieChart.description.isEnabled = false
 
         pieChart.animateXY(2000,2000)
     }
