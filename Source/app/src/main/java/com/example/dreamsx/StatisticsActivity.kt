@@ -129,5 +129,8 @@ class StatisticsActivity() : AppCompatActivity() {
             else
                 countTegs[teg] = countTegs.getValue(teg) + 1
         }
+
+        val values: MutableCollection<Int> = countTegs.values
+        val maxValue = values.maxOrNull()
     }
 }
