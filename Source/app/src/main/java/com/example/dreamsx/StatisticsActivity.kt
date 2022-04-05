@@ -139,5 +139,12 @@ class StatisticsActivity() : AppCompatActivity() {
             if (countTegs[key] == maxValue)
                 topTegs.add(key)
         }
+
+        var stringTopTegs: String = ""
+        for (teg in topTegs){
+            val newteg = "#$teg "
+            stringTopTegs += newteg
+        }
+        this.topTags.text = stringTopTegs
     }
 }
