@@ -111,9 +111,8 @@ class StatisticsActivity() : AppCompatActivity() {
 
         pieChart.data = PieData(dataSet)
         pieChart.size
+
         //Подписи к дугам
-//        pieChart.data.setValueTextColor(Color.RED)
-//        pieChart.data.setValueTextSize(10f)
         pieChart.data.setValueTextSize(0f)
         pieChart.legend.isEnabled = false
         pieChart.description.isEnabled = false
@@ -134,16 +133,23 @@ class StatisticsActivity() : AppCompatActivity() {
         val maxValue = values.maxOrNull()
 
         val topTegs: MutableList<String> = mutableListOf()
+        var key: String
         for (teg in countTegs){
-            val key: String = teg.key
+            key = teg.key
             if (countTegs[key] == maxValue)
                 topTegs.add(key)
         }
 
         var stringTopTegs: String = ""
+
+        var newTeg: String = ""
         for (teg in topTegs){
-            val newteg = "#$teg "
-            stringTopTegs += newteg
+            if(teg.startsWith("#")){
+                newTeg = "$teg "
+            } else{
+                newTeg = "#$teg "
+            }
+            stringTopTegs += newTeg
         }
         this.topTags.text = stringTopTegs
     }
