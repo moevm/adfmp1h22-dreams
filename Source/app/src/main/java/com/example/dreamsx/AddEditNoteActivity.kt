@@ -19,51 +19,54 @@ class AddEditNoteActivity : AppCompatActivity() {
     lateinit var viewModel: NoteViewModel
     var noteID = -1;
 
-    var predictionSelected: Boolean = false
+    var currentQuestion: Int = -1
+
+
+    var isPredictionYesSelected: Boolean = false
     var predictionAnswers: String = ""
-    var numberOfCountPrecQuestion: Int = 0
+
 
     //вопросы при создании сна
     lateinit var precisionYesBtn:RadioButton
     lateinit var precisionNoBtn:RadioButton
     lateinit var questionLabel:TextView
-    lateinit var answerLabel:EditText
+    lateinit var answerLabel:EditText //
     lateinit var precionNextBtn: Button
 
-    val predictionQuestionsList:List<String> = listOf(
+    private val predictionQuestionsList:List<String> = listOf(
         "Вы были в обычном для себя месте?",
         "Видели знакомых?",
-        "3 ",
+        "Куда вы направлялись?",
         )
 
-    val predictionHintsList:List<String> = listOf(
+    private val predictionHintsList:List<String> = listOf(
         "Введите название места",
         "Введите имя знакомого",
-        "3 ",
+        "Введите вашу цель",
     )
 
-    val predictionAnswerPositiveList:List<String> = listOf(
+    private val predictionAnswerPositiveList:List<String> = listOf(
+        "Находился в обычном для себя месте ",
         "Был рядом мой приятель ",
-        "Я в обычном для себя месте ",
-        "3 ",
+        "Я шел по направлению к ",
     )
 
-    val predictionAnswerNegativeList:List<String> = listOf(
-        "Был рядом мой приятель ",
+    private val predictionAnswerNegativeList:List<String> = listOf(
         "Я оказался на новой для себя локации ",
-        "3 ",
+        "Знакомых рядом не было ",
+        "В момент сна я не передвигался ",
     )
+    
+    var totalCountOfQuestions: Int = predictionQuestionsList.size
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_note)
 
-        //---*******************************************************************************
         noteTitleEdit = findViewById(R.id.idEditNoteTitle)
         noteDescriptionEdit = findViewById(R.id.idEditNoteDescription)
         noteTagEdit = findViewById(R.id.idEditNoteTag)
-        //noteMoodEdit = findViewById(R.id.idEditNoteDescription)
 
         val dreamMoodRadioGroup: RadioGroup = findViewById<RadioGroup>(R.id.moodRadioGroup)
         val precisionRadioGroup: RadioGroup = findViewById<RadioGroup>(R.id.precisionRadioGroup)
@@ -79,7 +82,6 @@ class AddEditNoteActivity : AppCompatActivity() {
 
         precisionNoBtn.isChecked = true
         precionNextBtn.isEnabled = false
-        answerLabel.isEnabled = false
 
         moodMiddleBtn.isChecked = true
         noteMoodEdit = DreamMood.MIDDLE
@@ -100,7 +102,6 @@ class AddEditNoteActivity : AppCompatActivity() {
             noteID = intent.getIntExtra("noteID", -1)
             addUpdateButton.setText("Обновить сон")
 
-            //---*******************************************************************************
             noteTitleEdit.setText(noteTitle)
             noteDescriptionEdit.setText(noteDesc)
             noteTagEdit.setText(noteTags)
@@ -116,36 +117,37 @@ class AddEditNoteActivity : AppCompatActivity() {
         precisionRadioGroup.setOnCheckedChangeListener(
             RadioGroup.OnCheckedChangeListener { group, checkedId ->
                 val radio: RadioButton = findViewById(checkedId)
-
                 if (checkedId == R.id.idRadioBtnYes){
+                    isPredictionYesSelected = true
 
-                    turnOnPredictionBlock(true)
+                    //на первом вопросе вывестти блок предсказания
+                    if (currentQuestion == -1) {
+                        currentQuestion++;
+                        turnOnPredictionBlock(true)
+                        showQuestion()
+                        precionNextBtn.isEnabled = true
+                    }
 
-                    Toast.makeText(this, "*checkTRUE", Toast.LENGTH_LONG).show()
-                    answerLabel.isEnabled = true
                 }
                 else if (checkedId == R.id.idRadioBtnNo){
-                    turnOnPredictionBlock(false)
-                    Toast.makeText(this, "*checkFALSE", Toast.LENGTH_LONG).show()
+                    isPredictionYesSelected = false
                 }
             })
 
 
-
         //Кнопка Далее для следующего вопроса.
         precionNextBtn.setOnClickListener {
-            NextPrediction()
+            next()
         }
 
         //Кнопка добавления/обновления сна.
         addUpdateButton.setOnClickListener {
-            //---*******************************************************************************
+
             val noteTitle = noteTitleEdit.text.toString()
             val noteDescription = noteDescriptionEdit.text.toString()
             val noteTag = noteTagEdit.text.toString()
 
             //Заполнение настроения
-
             val selectMoodBtn:Int = dreamMoodRadioGroup!!.checkedRadioButtonId
             val selectedMoodBtn = findViewById<RadioButton>(selectMoodBtn)
 
@@ -158,7 +160,6 @@ class AddEditNoteActivity : AppCompatActivity() {
             else if (selectedMoodBtn.id == R.id.radio_sad){
                 noteMoodEdit = DreamMood.BAD
             }
-
             if (noteType.equals("Edit")){
                 if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() ){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
@@ -194,65 +195,63 @@ class AddEditNoteActivity : AppCompatActivity() {
         }
     }
 
-    private fun NextPrediction(){
-        predictionAnswers += createPrediction(numberOfCountPrecQuestion) //Добавляем текущие предсказание к строке
-        //Выключаем кн Далее если все вопросы заданы.
-        if (numberOfCountPrecQuestion == predictionQuestionsList.size-1){
-            precionNextBtn.isEnabled = false
-            return
-        }
-        answerLabel.clear() //Очищаем предыдущий ввод
-        numberOfCountPrecQuestion++; //Увеличиваем счетчик вопросов
 
-        Toast.makeText(this, predictionQuestionsList.size.toString(), Toast.LENGTH_LONG).show()
-    }
 
-    private fun createPrediction(indexOfQuestion: Int) : String {
-        var resStr:String = ""
 
-        var selectedQuestion = predictionQuestionsList[indexOfQuestion]
-        questionLabel.text = selectedQuestion
-        answerLabel.isEnabled = true
-
-        //открывается поле для ввода.
-        answerLabel.hint = predictionHintsList[indexOfQuestion]
-
-        var resAnswer: String
-        if (predictionSelected)
-            resAnswer = predictionAnswerPositiveList[indexOfQuestion]
-        else
-            resAnswer = predictionAnswerNegativeList[indexOfQuestion]
-
-        resStr = resAnswer + answerLabel.text
-        return resStr
-    }
-
-    var flagOnlyOnce: Boolean = true
-
+    // Сключение/выключение полей для ввода в зависимости от Да/Нет пользователя.
     private fun turnOnPredictionBlock(turn: Boolean){
-        predictionSelected = turn
-        //Далее активации/деактивируется только на 1 вопросе
-        if (numberOfCountPrecQuestion >= 1)
-            flagOnlyOnce = false
-
-        if (numberOfCountPrecQuestion==0 && predictionSelected) {
-            NextPrediction()
-        }
-
-        else if(!predictionSelected && numberOfCountPrecQuestion<2 ){ // of - выключаем.
-            numberOfCountPrecQuestion=0 //
-            questionLabel.text=""
+        //выключение поля для ввода
+        answerLabel.isEnabled = turn
+        answerLabel.isActivated = true
+        if (!turn){ // если Нет - то подсказка и выпрос не выводятся
             answerLabel.clear()
             answerLabel.hint = ""
         }
-        precionNextBtn.isEnabled = turn
-        answerLabel.isEnabled = turn
+    }
 
+
+    private fun next(){
+        //заполняем ответ на предыдущий вопос.
+        predictionAnswers += getAnswer() + answerLabel.text + ". "
+        currentQuestion++;
+        answerLabel.clear()
+
+        /// Вопросы закоснчены..
+        if (currentQuestion >= totalCountOfQuestions){
+            precionNextBtn.isEnabled = false //Выключаем кнопку на последнем вопросе
+            turnOnPredictionBlock(false)
+            precisionYesBtn.isEnabled = false
+            precisionNoBtn.isEnabled = false
+            return
+        }
+        else{
+            precionNextBtn.isEnabled = true
+
+            showQuestion() //Выводим вопрос.
+
+            // Последнйи вопрос.
+            if (currentQuestion+1 == totalCountOfQuestions){
+                precionNextBtn.text = "Ок"
+            }
+        }
+    }
+
+
+    private fun showQuestion(){
+        questionLabel.text = predictionQuestionsList[currentQuestion]
+        answerLabel.hint = predictionHintsList[currentQuestion]
+    }
+
+    private fun getAnswer() : String {
+
+        var resAnswer : String = if (isPredictionYesSelected)
+            predictionAnswerPositiveList[currentQuestion]
+        else
+            predictionAnswerNegativeList[currentQuestion]
+        return resAnswer
     }
 
     private fun EditText.clear() {
         text.clear()
     }
-
-
 }
