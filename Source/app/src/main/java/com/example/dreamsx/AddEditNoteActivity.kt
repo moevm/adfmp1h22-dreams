@@ -145,7 +145,9 @@ class AddEditNoteActivity : AppCompatActivity() {
 
             val noteTitle = noteTitleEdit.text.toString()
             val noteDescription = noteDescriptionEdit.text.toString()
+
             val noteTag = noteTagEdit.text.toString()
+
 
             //Заполнение настроения
             val selectMoodBtn:Int = dreamMoodRadioGroup!!.checkedRadioButtonId

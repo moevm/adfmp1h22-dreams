@@ -37,6 +37,7 @@ class StatisticsActivity() : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Статистика"
 
+
         val countOfDreams = intent.getStringExtra("countOfDreams")
         val countOfPositiveDreams = intent.getStringExtra("countOfPositiveDreams")
         val countOfMiddleDreams = intent.getStringExtra("countOfMiddleDreams")
@@ -160,5 +161,6 @@ class StatisticsActivity() : AppCompatActivity() {
             stringTopTegs += newTeg
         }
         this.topTags.text = stringTopTegs
+
     }
 }

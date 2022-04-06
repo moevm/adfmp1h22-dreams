@@ -95,8 +95,10 @@
         android:layout_below="@id/precisionRadioGroup"
         android:layout_alignLeft="@id/idQuestionLabel"
         android:layout_marginStart="1dp"
+
         android:layout_marginLeft="1dp"
         android:layout_marginTop="0dp"
+
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="1dp"
 
@@ -110,9 +112,11 @@
         android:id="@+id/idBtnNextPrecision"
         android:layout_width="wrap_content"
         android:layout_height="34dp"
+
         android:layout_below="@id/idEditPrcsAnswer"
 
         android:layout_marginStart="120dp"
+
         android:layout_marginTop="1dp"
 
         android:layout_marginEnd="100dp"
@@ -128,8 +132,10 @@
         android:layout_height="wrap_content"
 
         android:layout_below="@id/idBtnNextPrecision"
+
         android:layout_marginStart="3dp"
         android:layout_marginTop="8dp"
+
         android:text="Настроение во время сна:"
 
         android:textColor="@color/white"
