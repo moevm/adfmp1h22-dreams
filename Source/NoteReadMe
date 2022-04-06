@@ -1,0 +1,11 @@
+Note.kt *
+
+NotesDao.kt
+NoteDatabase.kt
+NoteRepository.kt
+NoteViewModal.kt
+NoteRVAdapter.kt *
+
+AddEditNoteActivity.kt - заполнение сна через UI *
+
+MainActivity.kt *
