@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.core.view.size
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -60,13 +61,20 @@ class StatisticsActivity() : AppCompatActivity() {
 
 
         //Подготовка данных для диаграммы
-        var goodPct : Float = getPercentage(countOfPositiveDreams!!.toInt(), countOfDreams!!.toInt())
-        var middlePct : Float = getPercentage(countOfMiddleDreams!!.toInt(), countOfDreams!!.toInt())
-        var badPct : Float = getPercentage(countOfNegativeDreams!!.toInt(), countOfDreams!!.toInt())
+        if(countOfDreams!!.toInt() > 0){
+            var goodPct : Float = getPercentage(countOfPositiveDreams!!.toInt(), countOfDreams!!.toInt())
+            var middlePct : Float = getPercentage(countOfMiddleDreams!!.toInt(), countOfDreams!!.toInt())
+            var badPct : Float = getPercentage(countOfNegativeDreams!!.toInt(), countOfDreams!!.toInt())
 
-        createPieChart(goodPct, middlePct, badPct)
+            createPieChart(goodPct, middlePct, badPct)
 
-        getTopTegs(arrayOfTags)
+            getTopTegs(arrayOfTags)
+        } else{
+            pieChart.isVisible = false
+        }
+
+
+
 
     }
 
@@ -76,7 +84,7 @@ class StatisticsActivity() : AppCompatActivity() {
 
     //Отрисовка диаграммы статистики
     private fun createPieChart(goodPct: Float, middlePct: Float, badPct: Float) {
-
+        pieChart.isVisible = true
         val pieChart: PieChart = this.pieChart
         pieChart.description.isEnabled = false
 
