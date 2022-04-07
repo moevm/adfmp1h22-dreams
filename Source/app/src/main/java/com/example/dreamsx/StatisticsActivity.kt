@@ -38,7 +38,7 @@ class StatisticsActivity() : AppCompatActivity() {
     private lateinit var simpleDateFormat: SimpleDateFormat
     private lateinit var currentDate: LocalDate
     private lateinit var datePattern: DateTimeFormatter
-    //private lateinit var listOfAllNotes: MutableList<Note>
+    private lateinit var listOfAllNotes: MutableList<Note>
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +58,7 @@ class StatisticsActivity() : AppCompatActivity() {
         topTags = findViewById<TextView>(R.id.tagsList)
         pieChart = findViewById<PieChart>(R.id.pieChart)
 
-        var listOfAllNotes = intent.getSerializableExtra("listOfAllNotes") as MutableList<Note>
+        listOfAllNotes = intent.getSerializableExtra("listOfAllNotes") as MutableList<Note>
 
         // Статистика по дате -----------------------------------------------------------------------
 
@@ -74,23 +74,13 @@ class StatisticsActivity() : AppCompatActivity() {
 
         // отбор снов по указанному периоду.
         weekBtn.setOnClickListener {
-            dreamsPeriodTitle.text = "неделю:"
-            calendar.add(Calendar.DATE, -7)
-            var dateChecker: Date = calendar.time
-
-            var cmp = dateChecker.before(simpleDateFormat.parse(listOfAllNotes[0].timeStamp))
-            var x = listOfAllNotes.filter { cmp }
-            fillStatistics(notes = x)
+            btnWeekHandler(calendar)
         }
         monthBtn.setOnClickListener {
-            dreamsPeriodTitle.text = "месяц:"
-            calendar.add(Calendar.DATE, -30)
-            fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = calendar.time, it.timeStamp) })
+            btnMonthHandler(calendar)
         }
         yearBtn.setOnClickListener {
-            dreamsPeriodTitle.text = "год:"
-            calendar.add(Calendar.YEAR, -1)
-            fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = calendar.time, it.timeStamp) })
+            btnYearHandler(calendar)
         }
     }
 
@@ -120,23 +110,23 @@ class StatisticsActivity() : AppCompatActivity() {
 
     }
 
-//    private fun btnWeekHandler(cal: Calendar){
-//        dreamsPeriodTitle.text = "неделю:"
-//        cal.add(Calendar.DATE, -7)
-//        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
-//    }
+    private fun btnWeekHandler(cal: Calendar){
+        dreamsPeriodTitle.text = "неделю:"
+        cal.add(Calendar.DATE, -7)
+        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
+    }
 
-//    private fun btnMonthHandler(cal: Calendar){
-//        dreamsPeriodTitle.text = "месяц:"
-//        cal.add(Calendar.DATE, -30)
-//        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
-//    }
-//
-//    private fun btnYearHandler(cal: Calendar){
-//        dreamsPeriodTitle.text = "год:"
-//        cal.add(Calendar.YEAR, -1)
-//        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
-//    }
+    private fun btnMonthHandler(cal: Calendar){
+        dreamsPeriodTitle.text = "месяц:"
+        cal.add(Calendar.DATE, -30)
+        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
+    }
+
+    private fun btnYearHandler(cal: Calendar){
+        dreamsPeriodTitle.text = "год:"
+        cal.add(Calendar.YEAR, -1)
+        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
+    }
 
     // Отбор снов по определеннмоу периоду.
     private fun isDreamsBefore(dateChecker: Date, noteDateStr: String) : Boolean {
