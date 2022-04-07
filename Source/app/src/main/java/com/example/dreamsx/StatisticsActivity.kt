@@ -71,6 +71,7 @@ class StatisticsActivity() : AppCompatActivity() {
         // Convert Date to Calendar
         val calendar: Calendar = Calendar.getInstance()
         calendar.time = Date() //current date
+        btnWeekHandler(calendar) // по умолчанию недельный обзор
 
         // отбор снов по указанному периоду.
         weekBtn.setOnClickListener {
