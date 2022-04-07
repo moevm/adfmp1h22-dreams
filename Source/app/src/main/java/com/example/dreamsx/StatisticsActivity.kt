@@ -63,6 +63,7 @@ class StatisticsActivity() : AppCompatActivity() {
         // Статистика по дате -----------------------------------------------------------------------
 
         simpleDateFormat = SimpleDateFormat("dd MMM, yyyy - HH:mm")
+
         val currentDateStr:String = simpleDateFormat.format(Date())
         datePattern = DateTimeFormatter.ofPattern("dd MMM, yyyy - HH:mm")
         currentDate = LocalDate.parse(currentDateStr, datePattern) //Текущая дата
@@ -76,7 +77,9 @@ class StatisticsActivity() : AppCompatActivity() {
             dreamsPeriodTitle.text = "неделю:"
             calendar.add(Calendar.DATE, -7)
             var dateChecker: Date = calendar.time
-            var x = listOfAllNotes.filter { isDreamsBefore(dateChecker, it.timeStamp) }
+
+            var cmp = dateChecker.before(simpleDateFormat.parse(listOfAllNotes[0].timeStamp))
+            var x = listOfAllNotes.filter { cmp }
             fillStatistics(notes = x)
         }
         monthBtn.setOnClickListener {
