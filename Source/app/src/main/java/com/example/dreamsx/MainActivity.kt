@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
         var countOfPositiveDreams : Int = 0
         var countOfMiddleDreams : Int = 0
         var countOfNegativeDreams : Int = 0
-
-        var listOfAllTags : Array<String> = arrayOf("")
         var listOfAllNotes : List<Note> = listOf()
 
         viewModal = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModel::class.java)
@@ -53,7 +51,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
             countOfMiddleDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.MIDDLE })
             countOfNegativeDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.BAD })
 
-            listOfAllTags = noteRVApapter.getAllTags(list.filter { it.noteTags != "" })
+            //listOfAllTags = noteRVApapter.getAllTags(list.filter { it.noteTags != "" })
             listOfAllNotes = noteRVApapter.getAllNotes()
         })
 
@@ -71,7 +69,6 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
                 }
                 R.id.ic_statistics -> {
                     val intent = Intent(this, StatisticsActivity::class.java)
-                    intent.putExtra("arrayOfTags", listOfAllTags)
                     intent.putExtra("listOfAllNotes", listOfAllNotes as Serializable)
                     startActivity(intent)
                 }

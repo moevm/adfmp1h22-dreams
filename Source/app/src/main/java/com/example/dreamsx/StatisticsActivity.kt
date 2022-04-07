@@ -48,24 +48,24 @@ class StatisticsActivity() : AppCompatActivity() {
         topTags = findViewById<TextView>(R.id.tagsList)
         pieChart = findViewById<PieChart>(R.id.pieChart)
 
-        val arrayOfTags: Array<String> = intent.getStringArrayExtra("arrayOfTags") as Array<String> //Теги
+
         val listOfAllNotes: MutableList<Note> = intent.getSerializableExtra("listOfAllNotes") as MutableList<Note>
+        var listOfTags: Array<String> = arrayOf()//Теги
+
+        listOfTags = getAllTags(listOfAllNotes.filter { it.noteTags != "" })
+
+
         val countOfDreams = listOfAllNotes.size
-        val countOfPositiveDreams = listOfAllNotes.count({ notes -> notes.mood == DreamMood.COOL })
-        val countOfMiddleDreams = listOfAllNotes.count({ notes -> notes.mood == DreamMood.MIDDLE })
-        val countOfNegativeDreams = listOfAllNotes.count({ notes -> notes.mood == DreamMood.BAD })
+        val countOfPositiveDreams = listOfAllNotes.count { notes -> notes.mood == DreamMood.COOL }
+        val countOfMiddleDreams = listOfAllNotes.count { notes -> notes.mood == DreamMood.MIDDLE }
+        val countOfNegativeDreams = listOfAllNotes.count { notes -> notes.mood == DreamMood.BAD }
 
         countOfDreamTitle.text = countOfDreams.toString()
         countOfPositiveDreamsTitle.text = countOfPositiveDreams.toString()
         countOfMiddleDreamsTitle.text = countOfMiddleDreams.toString()
         countOfNegativeDreamsTitle.text = countOfNegativeDreams.toString()
 
-        fun getAllTags(newList : List<Note>) : Array<String>{
-            var tags : Array<String> = arrayOf()
-            for(element in newList)
-                tags += element.noteTags
-            return tags
-        }
+
 
         var period: Date
 
@@ -79,9 +79,6 @@ class StatisticsActivity() : AppCompatActivity() {
 
         }
 
-
-
-
         //Подготовка данных для диаграммы
         if(countOfDreams!!.toInt() > 0){
             var goodPct : Float = getPercentage(countOfPositiveDreams!!.toInt(), countOfDreams!!.toInt())
@@ -90,14 +87,18 @@ class StatisticsActivity() : AppCompatActivity() {
 
             createPieChart(goodPct, middlePct, badPct)
 
-            getTopTegs(arrayOfTags)
+            getTopTegs(listOfTags)
         } else{
             pieChart.isVisible = false
         }
 
+    }
 
-
-
+    private fun getAllTags(newList : List<Note>) : Array<String>{
+        var tags : Array<String> = arrayOf()
+        for(element in newList)
+            tags += element.noteTags
+        return tags
     }
 
     private fun getPercentage(current: Int, total: Int) : Float {
