@@ -1,18 +1,22 @@
 package com.example.dreamsx
 
-import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -22,6 +26,7 @@ class StatisticsActivity() : AppCompatActivity() {
     private lateinit var countOfPositiveDreamsTitle : TextView
     private lateinit var countOfMiddleDreamsTitle : TextView
     private lateinit var countOfNegativeDreamsTitle : TextView
+    private lateinit var dreamsPeriodTitle : TextView
     private lateinit var topTagsTitle : TextView // топ тегов
     private lateinit var topTags : TextView
 
@@ -30,8 +35,10 @@ class StatisticsActivity() : AppCompatActivity() {
     private lateinit var yearBtn : Button
 
     private lateinit var pieChart: PieChart
+    private lateinit var currentDate: LocalDate
+    private lateinit var datePattern: DateTimeFormatter
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
@@ -40,6 +47,7 @@ class StatisticsActivity() : AppCompatActivity() {
         weekBtn = findViewById<Button>(R.id.buttonWeek)
         monthBtn = findViewById<Button>(R.id.buttonMonth)
         yearBtn = findViewById<Button>(R.id.buttonYear)
+        dreamsPeriodTitle = findViewById<TextView>(R.id.textDreamsPeriodTitle)
         countOfDreamTitle = findViewById<TextView>(R.id.textDreamsTotalCount)
         countOfPositiveDreamsTitle = findViewById<TextView>(R.id.textPositiveDreamsCount)
         countOfMiddleDreamsTitle = findViewById<TextView>(R.id.textMiddleDreamsCount)
@@ -65,18 +73,45 @@ class StatisticsActivity() : AppCompatActivity() {
         countOfMiddleDreamsTitle.text = countOfMiddleDreams.toString()
         countOfNegativeDreamsTitle.text = countOfNegativeDreams.toString()
 
+        // -----------------------------------------------------------
+
+        val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
+        val currentDateStr:String = sdf.format(Date())
+        datePattern = DateTimeFormatter.ofPattern("dd MMM, yyyy - HH:mm")
+        currentDate = LocalDate.parse(currentDateStr, datePattern) //Текущая дата
+
+        // Convert Date to Calendar
+        var cal: Calendar = Calendar.getInstance()
+        cal.time = Date() //current date
+
+        // Perform addition/subtraction
+        cal.add(Calendar.DATE, -7)
+
+        var dateSubWeek : Date = cal.time
+
+        //var dateFromNote : String = listOfAllNotes[0].timeStamp
+        var dateFromNote : String = "05 Apr, 2022 - 19:25"
+
+        var dateFromNoteStr : Date = sdf.parse(dateFromNote)
+
+        val cmp = dateSubWeek.compareTo(dateFromNoteStr)
+        var x = isBefore(dateSubWeek, dateFromNoteStr)
+        // отбор заметок по указанному периоду. <= 1m ... .
+        var newDateNotesList = listOfAllNotes.filter { getPeriod(it.timeStamp) == Period.ofDays(7) }
 
 
-        var period: Date
+
+        //===========
 
         weekBtn.setOnClickListener {
-
+            dreamsPeriodTitle.text = "неделю:"
+            //val dreamsForWeek = listOfAllNotes.filter { it.timeStamp  }
         }
         monthBtn.setOnClickListener {
-
+            dreamsPeriodTitle.text = "месяц:"
         }
         yearBtn.setOnClickListener {
-
+            dreamsPeriodTitle.text = "год:"
         }
 
         //Подготовка данных для диаграммы
@@ -92,6 +127,17 @@ class StatisticsActivity() : AppCompatActivity() {
             pieChart.isVisible = false
         }
 
+    }
+
+    private fun isBefore(dateChecker: Date, noteDate: Date) : Boolean {
+        return dateChecker.before(noteDate)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getPeriod(timeStamp: String) : Period{
+
+        var noteDate = LocalDate.parse(timeStamp, datePattern)
+        return Period.between(currentDate, noteDate)
     }
 
     private fun getAllTags(newList : List<Note>) : Array<String>{

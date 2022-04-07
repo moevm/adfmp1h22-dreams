@@ -179,8 +179,6 @@ class AddEditNoteActivity() : AppCompatActivity() {
                 if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() ){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
-
-
                     var noteFinalDescription: String = ""
 
                     //Добавляем к описанию предсказание сна
