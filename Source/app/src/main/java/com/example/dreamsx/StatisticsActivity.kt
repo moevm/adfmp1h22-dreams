@@ -35,8 +35,10 @@ class StatisticsActivity() : AppCompatActivity() {
     private lateinit var yearBtn : Button
 
     private lateinit var pieChart: PieChart
+    private lateinit var simpleDateFormat: SimpleDateFormat
     private lateinit var currentDate: LocalDate
     private lateinit var datePattern: DateTimeFormatter
+    //private lateinit var listOfAllNotes: MutableList<Note>
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,69 +58,55 @@ class StatisticsActivity() : AppCompatActivity() {
         topTags = findViewById<TextView>(R.id.tagsList)
         pieChart = findViewById<PieChart>(R.id.pieChart)
 
+        var listOfAllNotes = intent.getSerializableExtra("listOfAllNotes") as MutableList<Note>
 
-        val listOfAllNotes: MutableList<Note> = intent.getSerializableExtra("listOfAllNotes") as MutableList<Note>
-        var listOfTags: Array<String> = arrayOf()//Теги
+        // Статистика по дате -----------------------------------------------------------------------
 
-        listOfTags = getAllTags(listOfAllNotes.filter { it.noteTags != "" })
+        simpleDateFormat = SimpleDateFormat("dd MMM, yyyy - HH:mm")
+        val currentDateStr:String = simpleDateFormat.format(Date())
+        datePattern = DateTimeFormatter.ofPattern("dd MMM, yyyy - HH:mm")
+        currentDate = LocalDate.parse(currentDateStr, datePattern) //Текущая дата
 
+        // Convert Date to Calendar
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = Date() //current date
 
-        val countOfDreams = listOfAllNotes.size
-        val countOfPositiveDreams = listOfAllNotes.count { notes -> notes.mood == DreamMood.COOL }
-        val countOfMiddleDreams = listOfAllNotes.count { notes -> notes.mood == DreamMood.MIDDLE }
-        val countOfNegativeDreams = listOfAllNotes.count { notes -> notes.mood == DreamMood.BAD }
+        // отбор снов по указанному периоду.
+        weekBtn.setOnClickListener {
+            dreamsPeriodTitle.text = "неделю:"
+            calendar.add(Calendar.DATE, -7)
+            var dateChecker: Date = calendar.time
+            var x = listOfAllNotes.filter { isDreamsBefore(dateChecker, it.timeStamp) }
+            fillStatistics(notes = x)
+        }
+        monthBtn.setOnClickListener {
+            dreamsPeriodTitle.text = "месяц:"
+            calendar.add(Calendar.DATE, -30)
+            fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = calendar.time, it.timeStamp) })
+        }
+        yearBtn.setOnClickListener {
+            dreamsPeriodTitle.text = "год:"
+            calendar.add(Calendar.YEAR, -1)
+            fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = calendar.time, it.timeStamp) })
+        }
+    }
 
+    private fun fillStatistics(notes: List<Note>){
+        var listOfTags: Array<String> = getAllTags(notes.filter { it.noteTags != "" })
+        val countOfDreams = notes.size
+        val countOfPositiveDreams = notes.count { notes -> notes.mood == DreamMood.COOL }
+        val countOfMiddleDreams = notes.count { notes -> notes.mood == DreamMood.MIDDLE }
+        val countOfNegativeDreams = notes.count { notes -> notes.mood == DreamMood.BAD }
         countOfDreamTitle.text = countOfDreams.toString()
         countOfPositiveDreamsTitle.text = countOfPositiveDreams.toString()
         countOfMiddleDreamsTitle.text = countOfMiddleDreams.toString()
         countOfNegativeDreamsTitle.text = countOfNegativeDreams.toString()
 
-        // -----------------------------------------------------------
-
-        val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
-        val currentDateStr:String = sdf.format(Date())
-        datePattern = DateTimeFormatter.ofPattern("dd MMM, yyyy - HH:mm")
-        currentDate = LocalDate.parse(currentDateStr, datePattern) //Текущая дата
-
-        // Convert Date to Calendar
-        var cal: Calendar = Calendar.getInstance()
-        cal.time = Date() //current date
-
-        // Perform addition/subtraction
-        cal.add(Calendar.DATE, -7)
-
-        var dateSubWeek : Date = cal.time
-
-        //var dateFromNote : String = listOfAllNotes[0].timeStamp
-        var dateFromNote : String = "05 Apr, 2022 - 19:25"
-
-        var dateFromNoteStr : Date = sdf.parse(dateFromNote)
-
-        val cmp = dateSubWeek.compareTo(dateFromNoteStr)
-        var x = isBefore(dateSubWeek, dateFromNoteStr)
-        // отбор заметок по указанному периоду. <= 1m ... .
-        var newDateNotesList = listOfAllNotes.filter { getPeriod(it.timeStamp) == Period.ofDays(7) }
-
-
-
-        //===========
-
-        weekBtn.setOnClickListener {
-            dreamsPeriodTitle.text = "неделю:"
-            //val dreamsForWeek = listOfAllNotes.filter { it.timeStamp  }
-        }
-        monthBtn.setOnClickListener {
-            dreamsPeriodTitle.text = "месяц:"
-        }
-        yearBtn.setOnClickListener {
-            dreamsPeriodTitle.text = "год:"
-        }
-
         //Подготовка данных для диаграммы
         if(countOfDreams!!.toInt() > 0){
-            var goodPct : Float = getPercentage(countOfPositiveDreams!!.toInt(), countOfDreams!!.toInt())
-            var middlePct : Float = getPercentage(countOfMiddleDreams!!.toInt(), countOfDreams!!.toInt())
-            var badPct : Float = getPercentage(countOfNegativeDreams!!.toInt(), countOfDreams!!.toInt())
+            val goodPct : Float = getPercentage(countOfPositiveDreams!!.toInt(), countOfDreams!!.toInt())
+            val middlePct : Float = getPercentage(countOfMiddleDreams!!.toInt(), countOfDreams!!.toInt())
+            val badPct : Float = getPercentage(countOfNegativeDreams!!.toInt(), countOfDreams!!.toInt())
 
             createPieChart(goodPct, middlePct, badPct)
 
@@ -129,8 +117,27 @@ class StatisticsActivity() : AppCompatActivity() {
 
     }
 
-    private fun isBefore(dateChecker: Date, noteDate: Date) : Boolean {
-        return dateChecker.before(noteDate)
+//    private fun btnWeekHandler(cal: Calendar){
+//        dreamsPeriodTitle.text = "неделю:"
+//        cal.add(Calendar.DATE, -7)
+//        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
+//    }
+
+//    private fun btnMonthHandler(cal: Calendar){
+//        dreamsPeriodTitle.text = "месяц:"
+//        cal.add(Calendar.DATE, -30)
+//        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
+//    }
+//
+//    private fun btnYearHandler(cal: Calendar){
+//        dreamsPeriodTitle.text = "год:"
+//        cal.add(Calendar.YEAR, -1)
+//        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
+//    }
+
+    // Отбор снов по определеннмоу периоду.
+    private fun isDreamsBefore(dateChecker: Date, noteDateStr: String) : Boolean {
+        return dateChecker.before(simpleDateFormat.parse(noteDateStr))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -178,14 +185,11 @@ class StatisticsActivity() : AppCompatActivity() {
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
         var customColors: List<Int> = listOf(
-            Color.rgb(69, 243, 6),
-            Color.rgb(234, 203, 6),
-            Color.rgb(243, 6, 6)
+            Color.rgb(69, 243, 6), //green
+            Color.rgb(234, 203, 6), //yellow
+            Color.rgb(243, 6, 6) //red
         )
         dataSet.colors = customColors
-
-
-
         pieChart.data = PieData(dataSet)
         pieChart.size
 
