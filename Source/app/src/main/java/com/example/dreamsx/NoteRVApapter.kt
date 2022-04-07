@@ -64,6 +64,14 @@ class NoteRVApapter(
         return tags
     }
 
+    fun getAllNotes() : List<Note>{
+//        var notes: Array<Note> = arrayOf()
+//        for(element in allNotes)
+//            notes += element
+        //return notes
+        return allNotes
+    }
+
 
 
 }

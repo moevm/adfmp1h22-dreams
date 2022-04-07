@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
+import java.util.*
 
 
 class StatisticsActivity() : AppCompatActivity() {
@@ -36,14 +37,6 @@ class StatisticsActivity() : AppCompatActivity() {
         setContentView(R.layout.activity_statistics)
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Статистика"
-
-
-        val countOfDreams = intent.getStringExtra("countOfDreams")
-        val countOfPositiveDreams = intent.getStringExtra("countOfPositiveDreams")
-        val countOfMiddleDreams = intent.getStringExtra("countOfMiddleDreams")
-        val countOfNegativeDreams = intent.getStringExtra("countOfNegativeDreams")
-        val arrayOfTags: Array<String> = intent.getStringArrayExtra("arrayOfTags") as Array<String> //Теги
-
         weekBtn = findViewById<Button>(R.id.buttonWeek)
         monthBtn = findViewById<Button>(R.id.buttonMonth)
         yearBtn = findViewById<Button>(R.id.buttonYear)
@@ -55,10 +48,38 @@ class StatisticsActivity() : AppCompatActivity() {
         topTags = findViewById<TextView>(R.id.tagsList)
         pieChart = findViewById<PieChart>(R.id.pieChart)
 
-        countOfDreamTitle.text = countOfDreams
-        countOfPositiveDreamsTitle.text = countOfPositiveDreams
-        countOfMiddleDreamsTitle.text = countOfMiddleDreams
-        countOfNegativeDreamsTitle.text = countOfNegativeDreams
+        val arrayOfTags: Array<String> = intent.getStringArrayExtra("arrayOfTags") as Array<String> //Теги
+        val listOfAllNotes: MutableList<Note> = intent.getSerializableExtra("listOfAllNotes") as MutableList<Note>
+        val countOfDreams = listOfAllNotes.size
+        val countOfPositiveDreams = listOfAllNotes.count({ notes -> notes.mood == DreamMood.COOL })
+        val countOfMiddleDreams = listOfAllNotes.count({ notes -> notes.mood == DreamMood.MIDDLE })
+        val countOfNegativeDreams = listOfAllNotes.count({ notes -> notes.mood == DreamMood.BAD })
+
+        countOfDreamTitle.text = countOfDreams.toString()
+        countOfPositiveDreamsTitle.text = countOfPositiveDreams.toString()
+        countOfMiddleDreamsTitle.text = countOfMiddleDreams.toString()
+        countOfNegativeDreamsTitle.text = countOfNegativeDreams.toString()
+
+        fun getAllTags(newList : List<Note>) : Array<String>{
+            var tags : Array<String> = arrayOf()
+            for(element in newList)
+                tags += element.noteTags
+            return tags
+        }
+
+        var period: Date
+
+        weekBtn.setOnClickListener {
+
+        }
+        monthBtn.setOnClickListener {
+
+        }
+        yearBtn.setOnClickListener {
+
+        }
+
+
 
 
         //Подготовка данных для диаграммы

@@ -8,7 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddEditNoteActivity : AppCompatActivity() {
+
+class AddEditNoteActivity() : AppCompatActivity() {
     lateinit var noteTitleEdit : EditText
     lateinit var noteDescriptionEdit : EditText
     lateinit var noteTagEdit : EditText

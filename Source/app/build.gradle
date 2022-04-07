@@ -3,11 +3,14 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
 }
 
 android {
     compileSdk 32
-
+    androidExtensions {
+        experimental = true
+    }
     defaultConfig {
         applicationId "com.example.dreamdiary"
         minSdk 21

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import  java.io.Serializable
 
 class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInterface {
 
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
         var countOfNegativeDreams : Int = 0
 
         var listOfAllTags : Array<String> = arrayOf("")
+        var listOfAllNotes : List<Note> = listOf()
 
         viewModal = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModel::class.java)
         viewModal.allNotes.observe(this, Observer{ list ->
@@ -50,7 +52,9 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
             countOfPositiveDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.COOL })
             countOfMiddleDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.MIDDLE })
             countOfNegativeDreams = noteRVApapter.getCountOfDreams(list.filter { it.mood == DreamMood.BAD })
+
             listOfAllTags = noteRVApapter.getAllTags(list.filter { it.noteTags != "" })
+            listOfAllNotes = noteRVApapter.getAllNotes()
         })
 
         addFAB.setOnClickListener{
@@ -58,9 +62,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
             startActivity(intent)
             this.finish()
         }
-
-
-
+        val noteX = Note("Title", "that is title", "12-12", "#samara", DreamMood.COOL)
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.ic_settings -> {
@@ -69,12 +71,8 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
                 }
                 R.id.ic_statistics -> {
                     val intent = Intent(this, StatisticsActivity::class.java)
-                    intent.putExtra("countOfDreams", countOfDreams.toString())
-                    intent.putExtra("countOfPositiveDreams", countOfPositiveDreams.toString())
-                    intent.putExtra("countOfMiddleDreams", countOfMiddleDreams.toString())
-                    intent.putExtra("countOfNegativeDreams", countOfNegativeDreams.toString())
                     intent.putExtra("arrayOfTags", listOfAllTags)
-
+                    intent.putExtra("listOfAllNotes", listOfAllNotes as Serializable)
                     startActivity(intent)
                 }
             }
