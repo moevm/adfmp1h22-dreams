@@ -13,9 +13,10 @@ import java.util.*
 class DateHandlerTest : TestCase() {
     private val dateStatisticsHandler: DateStatisticsHandler = DateStatisticsHandler()
     private val datePattern: DateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM, yyyy - HH:mm")
-    private var currentDate : LocalDate = LocalDate.parse("09 Apr, 2022 - 13:25", datePattern) //Текущая дата
+
 
     fun test_isDreamsBefore(){
+        var currentDate : LocalDate = LocalDate.parse("09 Apr, 2022 - 13:25", datePattern) //Текущая дата
         var date = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
         // Convert Date to Calendar
         val calendar1: Calendar = Calendar.getInstance()
