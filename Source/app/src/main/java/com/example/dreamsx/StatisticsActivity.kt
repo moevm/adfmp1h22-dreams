@@ -33,12 +33,10 @@ class StatisticsActivity() : AppCompatActivity() {
     private lateinit var weekBtn : Button
     private lateinit var monthBtn : Button
     private lateinit var yearBtn : Button
-
     private lateinit var pieChart: PieChart
-    private lateinit var simpleDateFormat: SimpleDateFormat
-    private lateinit var currentDate: LocalDate
-    private lateinit var datePattern: DateTimeFormatter
-    //private lateinit var listOfAllNotes: MutableList<Note>
+    private lateinit var listOfAllNotes: MutableList<Note>
+    private val tagsHandler: TagsHandler = TagsHandler()
+    private val dateStatisticsHandler: DateStatisticsHandler = DateStatisticsHandler()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,39 +56,23 @@ class StatisticsActivity() : AppCompatActivity() {
         topTags = findViewById<TextView>(R.id.tagsList)
         pieChart = findViewById<PieChart>(R.id.pieChart)
 
-        var listOfAllNotes = intent.getSerializableExtra("listOfAllNotes") as MutableList<Note>
+        listOfAllNotes = intent.getSerializableExtra("listOfAllNotes") as MutableList<Note>
 
         // Статистика по дате -----------------------------------------------------------------------
-
-        simpleDateFormat = SimpleDateFormat("dd MMM, yyyy - HH:mm")
-
-        val currentDateStr:String = simpleDateFormat.format(Date())
-        datePattern = DateTimeFormatter.ofPattern("dd MMM, yyyy - HH:mm")
-        currentDate = LocalDate.parse(currentDateStr, datePattern) //Текущая дата
-
         // Convert Date to Calendar
         val calendar: Calendar = Calendar.getInstance()
         calendar.time = Date() //current date
+        btnWeekHandler(calendar) // по умолчанию недельный обзор
 
         // отбор снов по указанному периоду.
         weekBtn.setOnClickListener {
-            dreamsPeriodTitle.text = "неделю:"
-            calendar.add(Calendar.DATE, -7)
-            var dateChecker: Date = calendar.time
-
-            var cmp = dateChecker.before(simpleDateFormat.parse(listOfAllNotes[0].timeStamp))
-            var x = listOfAllNotes.filter { cmp }
-            fillStatistics(notes = x)
+            btnWeekHandler(calendar)
         }
         monthBtn.setOnClickListener {
-            dreamsPeriodTitle.text = "месяц:"
-            calendar.add(Calendar.DATE, -30)
-            fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = calendar.time, it.timeStamp) })
+            btnMonthHandler(calendar)
         }
         yearBtn.setOnClickListener {
-            dreamsPeriodTitle.text = "год:"
-            calendar.add(Calendar.YEAR, -1)
-            fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = calendar.time, it.timeStamp) })
+            btnYearHandler(calendar)
         }
     }
 
@@ -112,42 +94,29 @@ class StatisticsActivity() : AppCompatActivity() {
             val badPct : Float = getPercentage(countOfNegativeDreams!!.toInt(), countOfDreams!!.toInt())
 
             createPieChart(goodPct, middlePct, badPct)
-
-            getTopTegs(listOfTags)
+            this.topTags.text = tagsHandler.getTopTags(listOfTags)
         } else{
             pieChart.isVisible = false
         }
 
     }
 
-//    private fun btnWeekHandler(cal: Calendar){
-//        dreamsPeriodTitle.text = "неделю:"
-//        cal.add(Calendar.DATE, -7)
-//        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
-//    }
-
-//    private fun btnMonthHandler(cal: Calendar){
-//        dreamsPeriodTitle.text = "месяц:"
-//        cal.add(Calendar.DATE, -30)
-//        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
-//    }
-//
-//    private fun btnYearHandler(cal: Calendar){
-//        dreamsPeriodTitle.text = "год:"
-//        cal.add(Calendar.YEAR, -1)
-//        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
-//    }
-
-    // Отбор снов по определеннмоу периоду.
-    private fun isDreamsBefore(dateChecker: Date, noteDateStr: String) : Boolean {
-        return dateChecker.before(simpleDateFormat.parse(noteDateStr))
+    private fun btnWeekHandler(cal: Calendar){
+        dreamsPeriodTitle.text = "неделю:"
+        cal.add(Calendar.DATE, -7)
+        fillStatistics(notes = listOfAllNotes.filter { dateStatisticsHandler.isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getPeriod(timeStamp: String) : Period{
+    private fun btnMonthHandler(cal: Calendar){
+        dreamsPeriodTitle.text = "месяц:"
+        cal.add(Calendar.DATE, -30)
+        fillStatistics(notes = listOfAllNotes.filter { dateStatisticsHandler.isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
+    }
 
-        var noteDate = LocalDate.parse(timeStamp, datePattern)
-        return Period.between(currentDate, noteDate)
+    private fun btnYearHandler(cal: Calendar){
+        dreamsPeriodTitle.text = "год:"
+        cal.add(Calendar.YEAR, -1)
+        fillStatistics(notes = listOfAllNotes.filter { dateStatisticsHandler.isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
     }
 
     private fun getAllTags(newList : List<Note>) : Array<String>{
@@ -157,7 +126,7 @@ class StatisticsActivity() : AppCompatActivity() {
         return tags
     }
 
-    private fun getPercentage(current: Int, total: Int) : Float {
+    fun getPercentage(current: Int, total: Int) : Float {
         return ((current*100) / total ).toFloat()
     }
 
@@ -204,38 +173,4 @@ class StatisticsActivity() : AppCompatActivity() {
         pieChart.animateXY(2000,2000)
     }
 
-    private fun getTopTegs(tegs: Array<String>){
-        val countTegs = mutableMapOf<String, Int>()
-        for (teg in tegs){
-            if (!countTegs.containsKey(teg))
-                countTegs[teg] = 1
-            else
-                countTegs[teg] = countTegs.getValue(teg) + 1
-        }
-
-        val values: MutableCollection<Int> = countTegs.values
-        val maxValue = values.maxOrNull()
-
-        val topTegs: MutableList<String> = mutableListOf()
-        var key: String
-        for (teg in countTegs){
-            key = teg.key
-            if (countTegs[key] == maxValue)
-                topTegs.add(key)
-        }
-
-        var stringTopTegs: String = ""
-
-        var newTeg: String = ""
-        for (teg in topTegs){
-            if(teg.startsWith("#")){
-                newTeg = "$teg "
-            } else{
-                newTeg = "#$teg "
-            }
-            stringTopTegs += newTeg
-        }
-        this.topTags.text = stringTopTegs
-
-    }
 }
