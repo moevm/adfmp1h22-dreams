@@ -39,6 +39,7 @@ class StatisticsActivity() : AppCompatActivity() {
     private lateinit var currentDate: LocalDate
     private lateinit var datePattern: DateTimeFormatter
     private lateinit var listOfAllNotes: MutableList<Note>
+    private val tagsHandler: TagsHandler = TagsHandler()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +105,7 @@ class StatisticsActivity() : AppCompatActivity() {
 
             createPieChart(goodPct, middlePct, badPct)
 
-            getTopTegs(listOfTags)
+            getTopTags(listOfTags)
         } else{
             pieChart.isVisible = false
         }
@@ -148,7 +149,7 @@ class StatisticsActivity() : AppCompatActivity() {
         return tags
     }
 
-    private fun getPercentage(current: Int, total: Int) : Float {
+    fun getPercentage(current: Int, total: Int) : Float {
         return ((current*100) / total ).toFloat()
     }
 
@@ -195,38 +196,7 @@ class StatisticsActivity() : AppCompatActivity() {
         pieChart.animateXY(2000,2000)
     }
 
-    private fun getTopTegs(tegs: Array<String>){
-        val countTegs = mutableMapOf<String, Int>()
-        for (teg in tegs){
-            if (!countTegs.containsKey(teg))
-                countTegs[teg] = 1
-            else
-                countTegs[teg] = countTegs.getValue(teg) + 1
-        }
-
-        val values: MutableCollection<Int> = countTegs.values
-        val maxValue = values.maxOrNull()
-
-        val topTegs: MutableList<String> = mutableListOf()
-        var key: String
-        for (teg in countTegs){
-            key = teg.key
-            if (countTegs[key] == maxValue)
-                topTegs.add(key)
-        }
-
-        var stringTopTegs: String = ""
-
-        var newTeg: String = ""
-        for (teg in topTegs){
-            if(teg.startsWith("#")){
-                newTeg = "$teg "
-            } else{
-                newTeg = "#$teg "
-            }
-            stringTopTegs += newTeg
-        }
-        this.topTags.text = stringTopTegs
-
+    private fun getTopTags(tags: Array<String>){
+        this.topTags.text = tagsHandler.getTopTags(tags)
     }
 }
