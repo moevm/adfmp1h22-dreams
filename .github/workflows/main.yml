@@ -4,9 +4,12 @@ on: [push]
 
 jobs:
   test:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     
     steps:
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          gradle-version: 6.8-rc-4
       - uses: actions/checkout@v2
     
       - name: set up JDK 1.8
@@ -15,11 +18,10 @@ jobs:
           java-version: "11"
       - name: Give Rights
         run: chmod +x ./gradlew
-      - name: Run unit tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 26
-          arch: x86_64
-          target: default
-          script: ./gradlew check && ./gradlew connectedCheck
+      - name: Build with Gradle
+        run: ./gradlew build --warning-mode=all --stacktrace
+      - name: Unit Test
+        run: ./gradlew testDebugUnitTest
+      - name: Android Test Report Action
+        uses: asadmansr/android-test-report-action@v1.2.0
         
