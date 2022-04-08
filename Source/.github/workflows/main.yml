@@ -17,10 +17,10 @@ jobs:
         with: 
           java-version: "11"
       - name: Give Rights
-        run: chmod +x ./Source/gradlew
+        run: chmod +x ./gradlew
       - name: Build with Gradle
-        run: ./Source/gradlew build --warning-mode=all --stacktrace
+        run: ./gradlew build --warning-mode=all --stacktrace
       - name: Unit Test
-        run: ./Source/gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest
       - name: Android Test Report Action
         uses: asadmansr/android-test-report-action@v1.2.0
