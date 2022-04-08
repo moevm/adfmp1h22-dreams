@@ -16,8 +16,8 @@ import java.util.*
 
 class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     @SuppressLint("RestrictedApi", "UseSwitchCompatOrMaterialCode", "UnspecifiedImmutableFlag")
-
-    var hour = 0
+    lateinit var broadcast :PendingIntent
+    var hour = 9
     var minutes = 0
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +46,9 @@ class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListene
         switch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 onChecked()
+            }
+            else{
+                onNotChecked()
             }
         }
     }
@@ -76,7 +79,7 @@ class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListene
         val notificationIntent = Intent("android.media.action.DISPLAY_NOTIFICATION")
         notificationIntent.addCategory("android.intent.category.DEFAULT")
 
-        val broadcast = PendingIntent.getBroadcast(
+        broadcast = PendingIntent.getBroadcast(
             this,
             100,
             notificationIntent,
@@ -88,5 +91,9 @@ class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListene
         cal.set(Calendar.MINUTE, minutes)
         cal.set(Calendar.SECOND, 0)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, broadcast)
+    }
+
+    fun onNotChecked(){
+        broadcast.cancel()
     }
 }
