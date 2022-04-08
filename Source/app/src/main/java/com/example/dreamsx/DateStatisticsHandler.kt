@@ -17,14 +17,15 @@ class DateStatisticsHandler {
     private val currentDate: LocalDate = LocalDate.parse(simpleDateFormat.format(Date()), datePattern) //Текущая дата
 
     // Отбор снов по определеннмоу периоду.
-    private fun isDreamsBefore(dateChecker: Date, noteDateStr: String) : Boolean {
+    fun isDreamsBefore(dateChecker: Date, noteDateStr: String) : Boolean {
         return dateChecker.before(simpleDateFormat.parse(noteDateStr))
     }
 
+    //Вычисление периода между двумя датами.
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getPeriod(timeStamp: String) : Period {
+    fun getPeriod(timeStamp: String, curDate: LocalDate = currentDate) : Period {
 
         var noteDate = LocalDate.parse(timeStamp, datePattern)
-        return Period.between(currentDate, noteDate)
+        return Period.between(curDate, noteDate)
     }
 }

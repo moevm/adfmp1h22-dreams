@@ -14,6 +14,5 @@ class TagsTest :  TestCase() {
 
         var topTagsResult: String = tagsHandler.getTopTags(tags)
         assertEquals(expectedResult, topTagsResult)
-
     }
 }

@@ -33,13 +33,10 @@ class StatisticsActivity() : AppCompatActivity() {
     private lateinit var weekBtn : Button
     private lateinit var monthBtn : Button
     private lateinit var yearBtn : Button
-
     private lateinit var pieChart: PieChart
-    private lateinit var simpleDateFormat: SimpleDateFormat
-    private lateinit var currentDate: LocalDate
-    private lateinit var datePattern: DateTimeFormatter
     private lateinit var listOfAllNotes: MutableList<Note>
     private val tagsHandler: TagsHandler = TagsHandler()
+    private val dateStatisticsHandler: DateStatisticsHandler = DateStatisticsHandler()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,13 +59,6 @@ class StatisticsActivity() : AppCompatActivity() {
         listOfAllNotes = intent.getSerializableExtra("listOfAllNotes") as MutableList<Note>
 
         // Статистика по дате -----------------------------------------------------------------------
-
-        simpleDateFormat = SimpleDateFormat("dd MMM, yyyy - HH:mm")
-
-        val currentDateStr:String = simpleDateFormat.format(Date())
-        datePattern = DateTimeFormatter.ofPattern("dd MMM, yyyy - HH:mm")
-        currentDate = LocalDate.parse(currentDateStr, datePattern) //Текущая дата
-
         // Convert Date to Calendar
         val calendar: Calendar = Calendar.getInstance()
         calendar.time = Date() //current date
@@ -104,8 +94,7 @@ class StatisticsActivity() : AppCompatActivity() {
             val badPct : Float = getPercentage(countOfNegativeDreams!!.toInt(), countOfDreams!!.toInt())
 
             createPieChart(goodPct, middlePct, badPct)
-
-            getTopTags(listOfTags)
+            this.topTags.text = tagsHandler.getTopTags(listOfTags)
         } else{
             pieChart.isVisible = false
         }
@@ -115,31 +104,19 @@ class StatisticsActivity() : AppCompatActivity() {
     private fun btnWeekHandler(cal: Calendar){
         dreamsPeriodTitle.text = "неделю:"
         cal.add(Calendar.DATE, -7)
-        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
+        fillStatistics(notes = listOfAllNotes.filter { dateStatisticsHandler.isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
     }
 
     private fun btnMonthHandler(cal: Calendar){
         dreamsPeriodTitle.text = "месяц:"
         cal.add(Calendar.DATE, -30)
-        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
+        fillStatistics(notes = listOfAllNotes.filter { dateStatisticsHandler.isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
     }
 
     private fun btnYearHandler(cal: Calendar){
         dreamsPeriodTitle.text = "год:"
         cal.add(Calendar.YEAR, -1)
-        fillStatistics(notes = listOfAllNotes.filter { isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
-    }
-
-    // Отбор снов по определеннмоу периоду.
-    private fun isDreamsBefore(dateChecker: Date, noteDateStr: String) : Boolean {
-        return dateChecker.before(simpleDateFormat.parse(noteDateStr))
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getPeriod(timeStamp: String) : Period{
-
-        var noteDate = LocalDate.parse(timeStamp, datePattern)
-        return Period.between(currentDate, noteDate)
+        fillStatistics(notes = listOfAllNotes.filter { dateStatisticsHandler.isDreamsBefore(dateChecker = cal.time, it.timeStamp) })
     }
 
     private fun getAllTags(newList : List<Note>) : Array<String>{
@@ -196,7 +173,4 @@ class StatisticsActivity() : AppCompatActivity() {
         pieChart.animateXY(2000,2000)
     }
 
-    private fun getTopTags(tags: Array<String>){
-        this.topTags.text = tagsHandler.getTopTags(tags)
-    }
 }
