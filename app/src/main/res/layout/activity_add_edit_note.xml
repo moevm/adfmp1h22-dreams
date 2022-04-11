@@ -35,11 +35,11 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
 
-        android:maxLines="1"
-        android:inputType="text"
-        android:imeOptions="actionNext"
         android:background="@drawable/rounded_edittext"
         android:hint="Введите теги"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:maxLines="1"
         android:textColor="@color/white"
         android:textColorHint="@color/white" />
 
