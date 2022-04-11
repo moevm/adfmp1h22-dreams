@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
 
     override fun onDeleteClick(note: Note) {
         viewModal.deleteNote(note)
-        Toast.makeText(this, "${note.notesTitle}", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Сон '${note.notesTitle}' удалён.", Toast.LENGTH_LONG).show()
     }
 
 
