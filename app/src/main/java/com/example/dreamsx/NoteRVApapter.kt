@@ -83,8 +83,3 @@ interface NoteClickDeleteInterface{
 interface NoteClickInterface{
     fun onNoteClick(note: Note)
 }
-
-interface NoteGetStatisticsStatistics{
-    fun getCountOfDreams(note: Note) : Int
-
-}
