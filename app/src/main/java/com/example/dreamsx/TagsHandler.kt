@@ -1,5 +1,7 @@
 package com.example.dreamsx
 
+import java.util.*
+
 //Обработка тегов
 class TagsHandler {
     fun getTopTags(tags: Array<String>) : String {
@@ -18,12 +20,11 @@ class TagsHandler {
         }
 
         for (tag in tags2){
-
-
-            if (!countTags.containsKey(tag))
-                countTags[tag] = 1
+            var tag2 = tag.lowercase(Locale.getDefault())
+            if (!countTags.containsKey(tag2))
+                countTags[tag2] = 1
             else
-                countTags[tag] = countTags.getValue(tag) + 1
+                countTags[tag2] = countTags.getValue(tag2) + 1
         }
 
         val values: MutableCollection<Int> = countTags.values

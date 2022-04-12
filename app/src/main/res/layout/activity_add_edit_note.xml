@@ -27,17 +27,6 @@
         android:textColor="@color/white"
         android:textColorHint="@color/hint" />
 
-    <ImageButton
-        android:id="@+id/idTagButton"
-        android:layout_width="28dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/idEditNoteTitle"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/rounded_edittext"
-        android:src="@drawable/ic_tag">
-    </ImageButton>
 
 
     <EditText
@@ -46,12 +35,10 @@
         android:layout_height="wrap_content"
 
         android:layout_below="@+id/idEditNoteTitle"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-
-        android:layout_toRightOf="@id/idTagButton"
         android:background="@drawable/rounded_edittext"
         android:hint="Введите теги: #Отпуск"
 

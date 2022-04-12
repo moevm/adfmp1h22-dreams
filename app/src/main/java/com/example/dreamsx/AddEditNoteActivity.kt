@@ -15,7 +15,6 @@ class AddEditNoteActivity() : AppCompatActivity() {
     lateinit var noteDescriptionEdit : EditText
     lateinit var noteTagEdit : EditText
     lateinit var noteMoodEdit : DreamMood
-    lateinit var tagBtn : ImageButton
 
     lateinit var addUpdateButton : Button
 
@@ -85,7 +84,6 @@ class AddEditNoteActivity() : AppCompatActivity() {
         moodCool = findViewById<RadioButton>(R.id.radio_good)
         moodMiddle = findViewById<RadioButton>(R.id.radio_middle)
         moodBad = findViewById<RadioButton>(R.id.radio_sad)
-        tagBtn = findViewById<ImageButton>(R.id.idTagButton)
         answerLabel.isActivated = false
 
         precionNextBtn = findViewById<Button>(R.id.idBtnNextPrecision)
@@ -154,10 +152,6 @@ class AddEditNoteActivity() : AppCompatActivity() {
             next()
         }
 
-        tagBtn.setOnClickListener {
-            noteTagEdit.setText(noteTagEdit.text.toString() + "#")
-        }
-
         //Кнопка добавления/обновления сна.
         addUpdateButton.setOnClickListener {
 
@@ -169,8 +163,6 @@ class AddEditNoteActivity() : AppCompatActivity() {
             //удаление лишних пробелов
             noteTag = noteTag.replace("\\s+".toRegex(), " ")
 
-
-            val sharpPattern = "\\w\\s[^№]"
             //Проверка на корректность ввода сна
             noteTag = noteTag.replace("#", "")
             if (noteTag.endsWith(" ")) noteTag = noteTag.substring(0, noteTag.length-1) //удаление последнего пробела
