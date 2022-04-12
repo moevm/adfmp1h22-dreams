@@ -74,23 +74,6 @@ class SettingsActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener
         }
     }
 
-    override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
-        Log.d("timeTag", p1.toString())
-        Log.d("timeTag", p2.toString())
-        val p1format = p1.toString().padStart(2, '0')
-        val p2format = p2.toString().padStart(2, '0')
-
-        val textTime = findViewById<TextView>(R.id.textTime)
-        textTime.text = "$p1format:$p2format"
-
-        hour = p1
-        minutes = p2
-
-        val switch = findViewById<Switch>(R.id.switch1)
-        if(switch.isChecked)
-            onChecked()
-    }
-
     @RequiresApi(Build.VERSION_CODES.M)
     private fun onChecked() {
         val title = "Утреннее уведомление"
@@ -139,5 +122,23 @@ class SettingsActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener
         channel.description = desc
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onTimeSet(p0: android.widget.TimePicker?, hour: Int, minute: Int) {
+        val p1format = hour.toString().padStart(2, '0')
+        val p2format = minute.toString().padStart(2, '0')
+
+        val textTime = findViewById<TextView>(R.id.textTime)
+        val formatTime = "$p1format:$p2format"
+        textTime.text = formatTime
+
+        this.hour = hour
+        this.minutes = minute
+        this.textTime = formatTime
+
+        val switch = findViewById<Switch>(R.id.switch1)
+        if (switch.isChecked)
+            onChecked()
     }
 }
