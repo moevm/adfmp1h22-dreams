@@ -15,6 +15,7 @@ class AddEditNoteActivity() : AppCompatActivity() {
     lateinit var noteDescriptionEdit : EditText
     lateinit var noteTagEdit : EditText
     lateinit var noteMoodEdit : DreamMood
+    lateinit var tagBtn : ImageButton
 
     lateinit var addUpdateButton : Button
 
@@ -84,6 +85,7 @@ class AddEditNoteActivity() : AppCompatActivity() {
         moodCool = findViewById<RadioButton>(R.id.radio_good)
         moodMiddle = findViewById<RadioButton>(R.id.radio_middle)
         moodBad = findViewById<RadioButton>(R.id.radio_sad)
+        tagBtn = findViewById<ImageButton>(R.id.idTagButton)
         answerLabel.isActivated = false
 
         precionNextBtn = findViewById<Button>(R.id.idBtnNextPrecision)
@@ -152,13 +154,32 @@ class AddEditNoteActivity() : AppCompatActivity() {
             next()
         }
 
+        tagBtn.setOnClickListener {
+            noteTagEdit.setText(noteTagEdit.text.toString() + "#")
+        }
+
         //Кнопка добавления/обновления сна.
         addUpdateButton.setOnClickListener {
 
 
             val noteTitle = noteTitleEdit.text.toString()
             val noteDescription = noteDescriptionEdit.text.toString()
-            val noteTag = noteTagEdit.text.toString()
+            var noteTag = noteTagEdit.text.toString()
+
+            //удаление лишних пробелов
+            noteTag = noteTag.replace("\\s+".toRegex(), " ")
+
+
+            val sharpPattern = "\\w\\s[^№]"
+            //Проверка на корректность ввода сна
+            if (noteTag.contains("#")){
+                noteTag = noteTag.replace("#", "")
+                if (noteTag.endsWith(" ")) noteTag = noteTag.substring(0, noteTag.length-1) //удаление последнего пробела
+
+                noteTag = "#$noteTag"
+                noteTag = noteTag.replace(" ", " #")
+            }
+
 
 //Заполнение настроения
             val selectMoodBtn:Int = dreamMoodRadioGroup!!.checkedRadioButtonId
