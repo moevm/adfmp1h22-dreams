@@ -32,6 +32,12 @@ class AddEditNoteActivity() : AppCompatActivity() {
     private lateinit var answerLabel:EditText
     private lateinit var precionNextBtn: Button
 
+
+    //Кнопки настроения:
+    private lateinit var moodCool: RadioButton
+    private lateinit var moodMiddle: RadioButton
+    private lateinit var moodBad: RadioButton
+
     private val predictionQuestionsList:List<String> = listOf(
         "Вы были в обычном для себя месте?",
         "Видели знакомых?",
@@ -73,16 +79,16 @@ class AddEditNoteActivity() : AppCompatActivity() {
         precisionNoBtn= findViewById<RadioButton>(R.id.idRadioBtnNo)
         questionLabel = findViewById<TextView>(R.id.idQuestionLabel)
         answerLabel = findViewById<EditText>(R.id.idEditPrcsAnswer)
+        moodCool = findViewById<RadioButton>(R.id.radio_good)
+        moodMiddle = findViewById<RadioButton>(R.id.radio_middle)
+        moodBad = findViewById<RadioButton>(R.id.radio_sad)
         answerLabel.isActivated = false
 
         precionNextBtn = findViewById<Button>(R.id.idBtnNextPrecision)
-
-        val moodMiddleBtn:RadioButton = findViewById<RadioButton>(R.id.radio_middle)
-
         precisionNoBtn.isChecked = true
         precionNextBtn.isEnabled = false
 
-        moodMiddleBtn.isChecked = true
+        moodMiddle.isChecked = true
         noteMoodEdit = DreamMood.MIDDLE
 
         addUpdateButton = findViewById(R.id.idBtnAddUpdate)
@@ -91,27 +97,40 @@ class AddEditNoteActivity() : AppCompatActivity() {
 
         val noteType = intent.getStringExtra("noteType")
 
+
+
         //Заполнение UI из БД в случае редактирования
         if (noteType.equals("Edit")){
             supportActionBar?.title = "Редактирование сна"
-            val noteTitle = intent.getStringExtra("noteTitle")
-            val noteDesc = intent.getStringExtra("noteDescription")
-            val noteTags = intent.getStringExtra("noteTag")
+            val note: Note? = intent.getSerializableExtra("note") as? Note    // если нет значения с таким ключом, то photo == null
 
             noteID = intent.getIntExtra("noteID", -1)
             addUpdateButton.setText("Обновить сон")
 
-            noteTitleEdit.setText(noteTitle)
-            noteDescriptionEdit.setText(noteDesc)
-            noteTagEdit.setText(noteTags)
+            noteTitleEdit.setText(note?.notesTitle)
+            noteDescriptionEdit.setText(note?.noteDescription)
+            noteDescriptionEdit.setText(note?.noteDescription)
+            noteTagEdit.setText(note?.noteTags)
+            var x = note!!.mood
+            noteMoodEdit = note?.mood!!
 
-
+            when (noteMoodEdit) {
+                DreamMood.COOL -> {
+                    moodCool.isChecked = true
+                }
+                DreamMood.MIDDLE -> {
+                    moodMiddle.isChecked = true
+                }
+                DreamMood.BAD-> {
+                    moodBad.isChecked = true
+                }
+            }
         } else  {
             supportActionBar?.title = "Создание сна"
             addUpdateButton.setText("Сохранить сон")
         }
 
-        initPredictionBlock()
+
         //Заполнение предсказания
         // Get radio group selected item using on checked change listener
         precisionRadioGroup.setOnCheckedChangeListener(
@@ -134,37 +153,41 @@ class AddEditNoteActivity() : AppCompatActivity() {
         //Кнопка добавления/обновления сна.
         addUpdateButton.setOnClickListener {
 
+
             val noteTitle = noteTitleEdit.text.toString()
             val noteDescription = noteDescriptionEdit.text.toString()
             val noteTag = noteTagEdit.text.toString()
 
-
-            //Заполнение настроения
+//Заполнение настроения
             val selectMoodBtn:Int = dreamMoodRadioGroup!!.checkedRadioButtonId
             val selectedMoodBtn = findViewById<RadioButton>(selectMoodBtn)
 
-            if (selectedMoodBtn.id == R.id.radio_good){
-                noteMoodEdit = DreamMood.COOL
+            when (selectedMoodBtn.id) {
+                R.id.radio_good -> {
+                    noteMoodEdit = DreamMood.COOL
+                }
+                R.id.radio_middle -> {
+                    noteMoodEdit = DreamMood.MIDDLE
+                }
+                R.id.radio_sad -> {
+                    noteMoodEdit = DreamMood.BAD
+                }
             }
-            else if (selectedMoodBtn.id == R.id.radio_middle){
-                noteMoodEdit = DreamMood.MIDDLE
-            }
-            else if (selectedMoodBtn.id == R.id.radio_sad){
-                noteMoodEdit = DreamMood.BAD
-            }
+
             if (noteType.equals("Edit")){
                 if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() ){
+
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
                     precionNextBtn.isEnabled = false
-                    print("** * Updating noteTag: $noteTag")
-                    val updateNote = Note(noteTitle, noteDescription, currentDate, noteTag, noteMoodEdit)  ///////
+                    val updateNote = Note(noteTitle, noteDescription, currentDate, noteTag, noteMoodEdit)
                     updateNote.id = noteID
                     viewModel.updateNote(updateNote)
                     Toast.makeText(this, "Сон обновлен...", Toast.LENGTH_LONG).show()
                 }
             }
-            else {
+            else { // Create Dream
+                initPredictionBlock()
                 if (noteTitle.isNotEmpty() && (noteDescription.isNotEmpty() || predictionAnswers.isNotEmpty())){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())

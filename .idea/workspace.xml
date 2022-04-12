@@ -17,10 +17,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/AddEditNoteActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/AddEditNoteActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/NoteRVApapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/NoteRVApapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/NoteRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/NoteRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/NoteViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/NoteViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/NotesDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/NotesDao.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,5 +171,16 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Delete folder Source" />
     <option name="LAST_COMMIT_MESSAGE" value="Delete folder Source" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/dreamsx/AddEditNoteActivity.kt</url>
+          <line>114</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
