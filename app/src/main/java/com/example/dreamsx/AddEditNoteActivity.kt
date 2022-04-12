@@ -21,18 +21,16 @@ class AddEditNoteActivity() : AppCompatActivity() {
     var noteID = -1;
 
     var currentQuestion: Int = -1
-
-
     var isPredictionYesSelected: Boolean = false
     var predictionAnswers: String = ""
 
 
     //вопросы при создании сна
-    lateinit var precisionYesBtn:RadioButton
-    lateinit var precisionNoBtn:RadioButton
-    lateinit var questionLabel:TextView
-    lateinit var answerLabel:EditText //
-    lateinit var precionNextBtn: Button
+    private lateinit var precisionYesBtn:RadioButton
+    private lateinit var precisionNoBtn:RadioButton
+    private lateinit var questionLabel:TextView
+    private lateinit var answerLabel:EditText
+    private lateinit var precionNextBtn: Button
 
     private val predictionQuestionsList:List<String> = listOf(
         "Вы были в обычном для себя месте?",
@@ -113,6 +111,7 @@ class AddEditNoteActivity() : AppCompatActivity() {
             addUpdateButton.setText("Сохранить сон")
         }
 
+        initPredictionBlock()
         //Заполнение предсказания
         // Get radio group selected item using on checked change listener
         precisionRadioGroup.setOnCheckedChangeListener(
@@ -120,15 +119,6 @@ class AddEditNoteActivity() : AppCompatActivity() {
                 val radio: RadioButton = findViewById(checkedId)
                 if (checkedId == R.id.idRadioBtnYes){
                     isPredictionYesSelected = true
-
-                    //на первом вопросе вывестти блок предсказания
-                    if (currentQuestion == -1) {
-                        currentQuestion++;
-                        turnOnPredictionBlock(true)
-                        showQuestion()
-                        precionNextBtn.isEnabled = true
-                    }
-
                 }
                 else if (checkedId == R.id.idRadioBtnNo){
                     isPredictionYesSelected = false
@@ -146,7 +136,6 @@ class AddEditNoteActivity() : AppCompatActivity() {
 
             val noteTitle = noteTitleEdit.text.toString()
             val noteDescription = noteDescriptionEdit.text.toString()
-
             val noteTag = noteTagEdit.text.toString()
 
 
@@ -176,7 +165,7 @@ class AddEditNoteActivity() : AppCompatActivity() {
                 }
             }
             else {
-                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() ){
+                if (noteTitle.isNotEmpty() && (noteDescription.isNotEmpty() || predictionAnswers.isNotEmpty())){
                     val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
                     var noteFinalDescription: String = ""
@@ -190,14 +179,23 @@ class AddEditNoteActivity() : AppCompatActivity() {
                     viewModel.addNote(Note(noteTitle, noteFinalDescription, currentDate, noteTag, noteMoodEdit))
                     Toast.makeText(this, "Сон добавлен...", Toast.LENGTH_LONG).show()
                 }
+                else    { //noteTitle is Empty.
+                    Toast.makeText(this, "Заголовок сна и описание должны быть заполнены.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
             }
             startActivity(Intent(applicationContext, MainActivity::class.java))
             this.finish()
         }
     }
 
-
-
+    //Вывод первого вопроса.
+    private fun initPredictionBlock(){
+        currentQuestion++;
+        turnOnPredictionBlock(true)
+        showQuestion()
+        precionNextBtn.isEnabled = true
+    }
 
     // Сключение/выключение полей для ввода в зависимости от Да/Нет пользователя.
     private fun turnOnPredictionBlock(turn: Boolean){
@@ -237,6 +235,10 @@ class AddEditNoteActivity() : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        startActivity(Intent(applicationContext, MainActivity::class.java))
+        this.finish()
+    }
 
     private fun showQuestion(){
         questionLabel.text = predictionQuestionsList[currentQuestion]
@@ -244,7 +246,6 @@ class AddEditNoteActivity() : AppCompatActivity() {
     }
 
     private fun getAnswer() : String {
-
         var resAnswer : String = if (isPredictionYesSelected)
             predictionAnswerPositiveList[currentQuestion]
         else
