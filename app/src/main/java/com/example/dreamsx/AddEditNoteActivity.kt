@@ -1,5 +1,6 @@
 package com.example.dreamsx
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -65,6 +66,7 @@ class AddEditNoteActivity() : AppCompatActivity() {
     var totalCountOfQuestions: Int = predictionQuestionsList.size
 
 
+    @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_note)
@@ -173,11 +175,9 @@ class AddEditNoteActivity() : AppCompatActivity() {
                     noteMoodEdit = DreamMood.BAD
                 }
             }
-
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm")
             if (noteType.equals("Edit")){
                 if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty() ){
-
-                    val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
                     precionNextBtn.isEnabled = false
                     val updateNote = Note(noteTitle, noteDescription, currentDate, noteTag, noteMoodEdit)
@@ -189,7 +189,6 @@ class AddEditNoteActivity() : AppCompatActivity() {
             else { // Create Dream
                 initPredictionBlock()
                 if (noteTitle.isNotEmpty() && (noteDescription.isNotEmpty() || predictionAnswers.isNotEmpty())){
-                    val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
                     val currentDate:String = sdf.format(Date())
                     var noteFinalDescription: String = ""
 

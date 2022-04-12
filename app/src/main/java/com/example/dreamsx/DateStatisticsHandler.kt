@@ -1,5 +1,6 @@
 package com.example.dreamsx
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
@@ -17,8 +18,9 @@ class DateStatisticsHandler {
 //    private val currentDate: LocalDate = LocalDate.parse(simpleDateFormat.format(Date()), datePattern) //Текущая дата
 
     // Отбор снов по определеннмоу периоду.
+    @SuppressLint("SimpleDateFormat")
     fun isDreamsBefore(dateChecker: Date, noteDateStr: String) : Boolean {
-        val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("dd MMM, yyyy - HH:mm")
+        val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
         return dateChecker.before(simpleDateFormat.parse(noteDateStr))
     }
 

@@ -32,7 +32,7 @@ class NoteRVApapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.noteTV.setText(allNotes.get(position).notesTitle)
-        holder.timeTV.setText("Last updated : "+allNotes.get(position).timeStamp)
+        holder.timeTV.setText("Последнее обновление: "+allNotes.get(position).timeStamp)
         holder.tagTV.setText(allNotes.get(position).noteTags)
 
         holder.deleteTV.setOnClickListener{
@@ -65,10 +65,6 @@ class NoteRVApapter(
     }
 
     fun getAllNotes() : List<Note>{
-//        var notes: Array<Note> = arrayOf()
-//        for(element in allNotes)
-//            notes += element
-        //return notes
         return allNotes
     }
 
