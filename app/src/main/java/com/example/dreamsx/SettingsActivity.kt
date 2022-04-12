@@ -110,7 +110,7 @@ class SettingsActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
     }
 
-    fun onNotChecked() {
+    private fun onNotChecked() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(applicationContext, Notification::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -120,5 +120,13 @@ class SettingsActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         alarmManager.cancel(pendingIntent)
+    }
+
+    private fun getTime(): Long {
+        val cal: Calendar = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, this.hour)
+        cal.set(Calendar.MINUTE, this.minutes)
+        cal.set(Calendar.SECOND, 0)
+        return cal.timeInMillis
     }
 }
