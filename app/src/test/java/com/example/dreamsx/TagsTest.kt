@@ -10,7 +10,7 @@ class TagsTest :  TestCase() {
 
         var tags: Array<String> = arrayOf( "#Отпуск", "#Отпуск", "#Отпуск", "Бали",
             "#Самолет",  "#Самолет",  "#Самолет")
-        var expectedResult: String = "#Отпуск #Самолет "
+        var expectedResult: String = "#отпуск #самолет "
 
         var topTagsResult: String = tagsHandler.getTopTags(tags)
         assertEquals(expectedResult, topTagsResult)
