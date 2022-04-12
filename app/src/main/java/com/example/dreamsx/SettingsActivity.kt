@@ -1,61 +1,79 @@
 package com.example.dreamsx
 
-import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.DatePickerDialog
-import android.app.PendingIntent
-import android.app.TimePickerDialog
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.Switch
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
-class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
-    @SuppressLint("RestrictedApi", "UseSwitchCompatOrMaterialCode", "UnspecifiedImmutableFlag")
-    lateinit var broadcast :PendingIntent
-    var hour = 9
-    var minutes = 0
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
+
+val PREFS_NAME : String = "MyPrefsFile"
+
+class SettingsActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
+    private var hour: Int = 9
+    private var minutes: Int = 0
+    private var textTime: String = "09:00"
+    private var checked: Boolean = false
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val settings = getSharedPreferences(PREFS_NAME, 0)
+        hour = settings.getInt("hour", hour)
+        minutes = settings.getInt("minutes", minutes)
+        textTime = settings.getString("textTime", textTime).toString()
+        checked = settings.getBoolean("checked", checked)
         setContentView(R.layout.activity_settings)
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Настройки"
-
+        createNotificationChannel()
         val button = findViewById<Button>(R.id.btnPick)
         button.setOnClickListener(View.OnClickListener {
             val c = Calendar.getInstance()
-            val hour = c[Calendar.HOUR]
+            val hour = c[Calendar.HOUR_OF_DAY]
             val minute = c[Calendar.MINUTE]
             val timePickerDialog = TimePickerDialog(
                 this,
                 this,
                 hour,
                 minute,
-                DateFormat.is24HourFormat(this)
+                true
             )
             timePickerDialog.show()
         })
 
+        val textTime = findViewById<TextView>(R.id.textTime)
+        textTime.text = this.textTime
+
         val switch = findViewById<Switch>(R.id.switch1)
 
+        if (checked and !switch.isChecked) {
+            switch.toggle()
+        }
+
         switch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
+            Log.d("tag", "checked: $checked")
+            Log.d("tag", "isChecked: ${switch.isChecked}")
+            if(switch.isChecked){
+                Log.d("tag", "onChecked!")
+                checked = true
                 onChecked()
-            }
-            else{
+            } else {
+                Log.d("tag", "onNotChecked!")
+                checked = false
                 onNotChecked()
             }
         }
     }
 
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {}
-
-    @SuppressLint("UseSwitchCompatOrMaterialCode", "SetTextI18n")
     override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
         Log.d("timeTag", p1.toString())
         Log.d("timeTag", p2.toString())
@@ -73,7 +91,6 @@ class SettingsActivity : AppCompatActivity() , DatePickerDialog.OnDateSetListene
             onChecked()
     }
 
-    @SuppressLint("UnspecifiedImmutableFlag")
     fun onChecked(){
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val notificationIntent = Intent("android.media.action.DISPLAY_NOTIFICATION")
