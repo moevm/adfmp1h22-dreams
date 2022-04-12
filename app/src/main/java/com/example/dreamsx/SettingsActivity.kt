@@ -129,4 +129,15 @@ class SettingsActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener
         cal.set(Calendar.SECOND, 0)
         return cal.timeInMillis
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+        val name = "Notif Channel"
+        val desc = "A Description of the Channel"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelID, name, importance)
+        channel.description = desc
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
 }
