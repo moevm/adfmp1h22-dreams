@@ -91,23 +91,23 @@ class SettingsActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener
             onChecked()
     }
 
-    fun onChecked(){
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        val notificationIntent = Intent("android.media.action.DISPLAY_NOTIFICATION")
-        notificationIntent.addCategory("android.intent.category.DEFAULT")
-
-        broadcast = PendingIntent.getBroadcast(
-            this,
-            100,
-            notificationIntent,
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun onChecked() {
+        val title = "Утреннее уведомление"
+        val message = "Не забудь записать сон"
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(applicationContext, Notification::class.java)
+        intent.putExtra(titleExtra, title)
+        intent.putExtra(messageExtra, message)
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            notificationID,
+            intent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val cal: Calendar = Calendar.getInstance()
-        cal.set(Calendar.HOUR, hour)
-        cal.set(Calendar.MINUTE, minutes)
-        cal.set(Calendar.SECOND, 0)
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, broadcast)
+        val time = getTime()
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
     }
 
     fun onNotChecked(){
