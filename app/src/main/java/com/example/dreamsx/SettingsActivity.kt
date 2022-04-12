@@ -141,4 +141,16 @@ class SettingsActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener
         if (switch.isChecked)
             onChecked()
     }
+
+    override fun onPause() {
+        super.onPause()
+        val settings = getSharedPreferences(PREFS_NAME, 0)
+        val editor = settings.edit()
+        editor.clear();
+        editor.putInt("hour", hour)
+        editor.putInt("minutes", minutes)
+        editor.putString("textTime", textTime)
+        editor.putBoolean("checked", checked)
+        editor.apply();
+    }
 }
