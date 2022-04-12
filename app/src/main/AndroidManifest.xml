@@ -23,6 +23,9 @@
             android:name=".SettingsActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity"/>
+        <receiver
+            android:name=".Notification"
+            android:enabled="true"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -32,15 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NotificationActivity"
-            tools:ignore="Instantiatable" />
-        <receiver android:name=".AlarmReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>
