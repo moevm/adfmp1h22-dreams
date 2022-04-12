@@ -4,11 +4,26 @@ package com.example.dreamsx
 class TagsHandler {
     fun getTopTags(tags: Array<String>) : String {
         val countTags = mutableMapOf<String, Int>()
-        for (teg in tags){
-            if (!countTags.containsKey(teg))
-                countTags[teg] = 1
+
+        var tags2 : Array<String> = arrayOf()
+
+        for (tag in tags){
+            if (tag.contains(" ")) {
+                var splitedTags : List<String> = tag.split(" ")
+                tags2 += splitedTags
+            } else{
+                tags2 += tag
+            }
+
+        }
+
+        for (tag in tags2){
+
+
+            if (!countTags.containsKey(tag))
+                countTags[tag] = 1
             else
-                countTags[teg] = countTags.getValue(teg) + 1
+                countTags[tag] = countTags.getValue(tag) + 1
         }
 
         val values: MutableCollection<Int> = countTags.values
@@ -26,13 +41,18 @@ class TagsHandler {
 
         var newTeg: String = ""
         for (teg in topTags){
-            if(teg.startsWith("#")){
-                newTeg = "$teg "
-            } else{
-                newTeg = "#$teg "
-            }
+            newTeg = "$teg "
             stringTopTegs += newTeg
         }
         return stringTopTegs
+    }
+
+    private fun remove(arr: IntArray, index: Int): IntArray {
+        return if (index < 0 || index >= arr.size) {
+            arr
+        } else (arr.indices)
+            .filter { i: Int -> i != index }
+            .map { i: Int -> arr[i] }
+            .toIntArray()
     }
 }

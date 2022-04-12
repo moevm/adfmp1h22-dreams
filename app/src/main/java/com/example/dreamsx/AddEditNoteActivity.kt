@@ -172,14 +172,11 @@ class AddEditNoteActivity() : AppCompatActivity() {
 
             val sharpPattern = "\\w\\s[^№]"
             //Проверка на корректность ввода сна
-            if (noteTag.contains("#")){
-                noteTag = noteTag.replace("#", "")
-                if (noteTag.endsWith(" ")) noteTag = noteTag.substring(0, noteTag.length-1) //удаление последнего пробела
+            noteTag = noteTag.replace("#", "")
+            if (noteTag.endsWith(" ")) noteTag = noteTag.substring(0, noteTag.length-1) //удаление последнего пробела
 
-                noteTag = "#$noteTag"
-                noteTag = noteTag.replace(" ", " #")
-            }
-
+            noteTag = "#$noteTag"
+            noteTag = noteTag.replace(" ", " #")
 
 //Заполнение настроения
             val selectMoodBtn:Int = dreamMoodRadioGroup!!.checkedRadioButtonId
