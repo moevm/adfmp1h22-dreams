@@ -128,6 +128,7 @@ class AddEditNoteActivity() : AppCompatActivity() {
                 }
             }
         } else  {
+            initPredictionBlock()
             supportActionBar?.title = "Создание сна"
             addUpdateButton.setText("Сохранить сон")
         }
@@ -197,7 +198,7 @@ class AddEditNoteActivity() : AppCompatActivity() {
                 }
             }
             else { // Create Dream
-                initPredictionBlock()
+
                 if (noteTitle.isNotEmpty() && (noteDescription.isNotEmpty() || predictionAnswers.isNotEmpty())){
                     val currentDate:String = sdf.format(Date())
                     var noteFinalDescription: String = ""
