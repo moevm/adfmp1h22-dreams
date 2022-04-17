@@ -25,8 +25,16 @@ Dream diary – это приложение для ведения дневник
 Анализ всех снов за указанный период: количество снов с каждым настроением, топ тегов.
 
 ## icon
-![This is an image](https://github.com/moevm/adfmp1h22-dreams/blob/main/dreamappicon.png)
+![This is an image](dreamappicon.png)
 
 ## Feature Graphic
-![This is an image](https://github.com/moevm/adfmp1h22-dreams/blob/main/Feature%20Graphic.png)
+![This is an image](Feature%20Graphic.png)
+
+## Скриншоты
+![This is an image](Screenshot1.png)
+
+![This is an image](Screenshot2.png)
+
+![This is an image](Screenshot3.png)
+
 
